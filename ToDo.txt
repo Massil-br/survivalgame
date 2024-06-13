@@ -1,0 +1,8 @@
+objectifs à réaliser :
+- [ ] Créer un personnage
+- [ ] Créer un monde
+- [ ] Créer des ennemis
+- [ ] Créer des objets
+- [ ] Créer une interface utilisateur
+- [ ] Créer un menu
+- [ ] Créer un jeu
