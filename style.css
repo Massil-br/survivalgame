@@ -4,7 +4,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #1b1b1b;
+    background-color: #000000;
 }
 canvas {
     border: 1px solid white; /* Pour visualiser les limites du canvas */

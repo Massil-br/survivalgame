@@ -11,14 +11,15 @@ function preload() {
     window.player = new Player();
     window.player.preload();
     images.push({ img: loadImage("assets/bush.png"), chance: 5 });
-    images.push({ img: loadImage("assets/grass1.png"), chance: 20 });
-    images.push({ img: loadImage("assets/grass2.png"), chance: 20 });
-    images.push({ img: loadImage("assets/tree.png"), chance: 20 });
+    images.push({ img: loadImage("assets/grass1.png"), chance: 5 });
+    images.push({ img: loadImage("assets/grass2.png"), chance: 5 });
+    images.push({ img: loadImage("assets/grass.png"), chance: 150 });
+    images.push({img:loadImage("assets/tree.png"), chance: 5});
 }
 
 function setup() {
     createCanvas(1500, 1000);
-    background(0, 0, 0); // Fond noir
+    background(0, 55, 0); // Fond noir
     generateImagesAroundPlayer();
 }
 
@@ -51,7 +52,7 @@ function generateImagesAroundPlayer() {
     for (let x = minX; x <= maxX; x += tileSize) {
         for (let y = minY; y <= maxY; y += tileSize) {
             let key = `${x},${y}`;
-            if (!map.has(key) && Math.random() < 0.3) { // Seulement 30% de chance de tenter de placer une image
+            if (!map.has(key)) { // Vérifier si la zone a déjà été générée
                 let img = randomImage();
                 if (img) {
                     placedImages.push({ img: img.img, x, y });
@@ -63,10 +64,11 @@ function generateImagesAroundPlayer() {
 }
 
 function randomImage() {
-    let total = 0;
-    images.forEach(item => total += item.chance);
-    let chanceOfEmpty = 30; // Ajouter une chance de 30% pour une case vide
-    total += chanceOfEmpty;
+    let totalChance = 0;
+    images.forEach(item => totalChance += item.chance);
+    let chanceOfEmpty = 80; // 80% de chance pour une case vide
+    let total = totalChance + chanceOfEmpty; // Total des chances incluant les cases vides
+
     let rand = Math.floor(Math.random() * total);
     let sum = 0;
 
@@ -76,7 +78,7 @@ function randomImage() {
             return item;
         }
     }
-    return null; // Retourner null représente une case vide
+    return null; // Retourner null si aucune image n'est sélectionnée, représentant une case vide
 }
 //#endregion
 
@@ -251,3 +253,4 @@ class Monster {
     }
 }
 // #endregion
+
