@@ -1,9 +1,9 @@
 class Player {
-    constructor() {
+    constructor(worldX, worldY) {
         this.x = 750; // Centre de l'écran en x (pour un canvas de 1500px de large)
         this.y = 500; // Centre de l'écran en y (pour un canvas de 1000px de haut)
-        this.worldX = 0; // Position x du monde par rapport au joueur
-        this.worldY = 0; // Position y du monde par rapport au joueur
+        this.worldX = worldX; // Position x du monde par rapport au joueur
+        this.worldY = worldY; // Position y du monde par rapport au joueur
         this.speed = 3; // Vitesse de déplacement
         this.skin = null;
         this.maxHealth = 10;
@@ -27,28 +27,21 @@ class Player {
         let moveY = 0;
 
         if (keyIsDown(90)) { // Z
-            moveY -= 1; // Déplacer le monde vers le haut
+            moveY -= this.speed;
         }
         if (keyIsDown(81)) { // Q
-            moveX -= 1; // Déplacer le monde vers la gauche
+            moveX -= this.speed;
         }
         if (keyIsDown(83)) { // S
-            moveY += 1; // Déplacer le monde vers le bas
+            moveY += this.speed;
         }
         if (keyIsDown(68)) { // D
-            moveX += 1; // Déplacer le monde vers la droite
+            moveX += this.speed;
         }
 
-        // Calculer si le mouvement est diagonal
-        if (moveX !== 0 && moveY !== 0) {
-            this.x += moveX * this.speed;
-            this.y += moveY * this.speed;
-            
-        } else {
-            this.x += moveX * this.speed * Math.sqrt(2);
-            this.y += moveY * this.speed * Math.sqrt(2);
-           
-        }
+        // Appliquer les mouvements tout en respectant les limites de la carte
+        this.x = constrain(this.x + moveX, -2500, 2500);
+        this.y = constrain(this.y + moveY, -2500, 2500);
     }
 
     play() {
@@ -70,7 +63,7 @@ class Player {
             let newHeight = spriteHeight * 0.1;  // Réduire la hauteur de 50%
 
             // Dessiner le GIF avec les nouvelles dimensions
-            image(this.skin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
+            image(this.skin, this.x - newWidth / 2, this.y - newHeight / 2, 64, 64);
         }
     }
 
