@@ -1,39 +1,110 @@
-function generateImagesAroundPlayer() {
-    let tileSize = 64; // Définir la taille des tuiles à 64x64
-    let range = 1250; // Moitié de 2500 pour centrer autour du joueur
-    let minX = Math.floor((player.x - range) / tileSize) * tileSize;
-    let maxX = Math.floor((player.x + range) / tileSize) * tileSize;
-    let minY = Math.floor((player.y - range) / tileSize) * tileSize;
-    let maxY = Math.floor((player.y + range) / tileSize) * tileSize;
+let map = null;
+let noiseScale = 1/50;
+let ocean = "#008dc4";
+let shore = "#00a9cc";
+let sand = "#eecda3";
+let grass = "#7ec850";
+let stone = "#676767";
+let snow = "#fffafa";
+let tileSize = 50; // Ajustez cette valeur selon la taille souhaitée pour les tuiles de la carte
 
-    for (let x = minX; x <= maxX; x += tileSize) {
-        for (let y = minY; y <= maxY; y += tileSize) {
-            let key = `${x},${y}`;
-            if (!map.has(key)) { // Vérifier si la zone a déjà été générée
-                let img = randomImage();
-                if (img) {
-                    placedImages.push({ img: img.img, x, y });
-                    map.set(key, true); // Marquer la zone comme générée
-                }
-            }
-        }
+function makeMap()
+{
+
+  map = [];
+  for(let i = 0; i < 200; i++)
+  {
+    map[i] = [];
+    for(let j = 0 ; j < 200; j++)
+    {
+      map[i][j] = pickColor(i, j);
     }
+  }
 }
 
-function randomImage() {
-    let totalChance = 0;
-    images.forEach(item => totalChance += item.chance);
-    let chanceOfEmpty = 80; // 80% de chance pour une case vide
-    let total = totalChance + chanceOfEmpty; // Total des chances incluant les cases vides
+function pickColor(i, j)
+{
+  let h = noise((i)*noiseScale,
+               (j)*noiseScale);
+  let c = "#facade";
+  
+  if(h < 0.2)
+  {
+    c = ocean;
+  } 
+  else if(h < 0.3)
+  {
+    if(random() > pow(h-0.2, 2)*100)
+    {
+      c = ocean;
+    }
+    else
+    {
+      c = shore;
+    }
+  }
+  else if(h < 0.4)
+  {
+    if(random() > pow(h-0.3, 2)*100)
+    {
+      c = shore;
+    }
+    else
+    {
+      c = sand;
+    }
+  }
+  else if(h < 0.5)
+  {
+    if(random() > pow(h-0.4, 2)*100)
+    {
+      c = sand;
+    }
+    else
+    {
+      c = grass;
+    }
+  }
+  else if(h < 0.6)
+  {
+    if(random() > pow(h-0.5, 2)*100)
+    {
+      c = grass;
+    }
+    else
+    {
+      c = stone;
+    }
+  }
+  else if (h < 0.7)
+  {
+    if(random() > pow(h-0.6, 2)*100)
+    {
+      c = stone;
+    }
+    else
+    {
+      c = snow;
+    }
+  }
+  else
+  {
+    c = snow;
+  }
+  
+  return color(c);
+}
 
-    let rand = Math.floor(Math.random() * total);
-    let sum = 0;
+function drawMap(startX, startY, w, h) {
+    let startXIndex = Math.max(0, Math.floor(startX / tileSize));
+    let startYIndex = Math.max(0, Math.floor(startY / tileSize));
+    let endXIndex = Math.min(mapWidth / tileSize, startXIndex + Math.ceil(w / tileSize));
+    let endYIndex = Math.min(mapHeight / tileSize, startYIndex + Math.ceil(h / tileSize));
 
-    for (let item of images) {
-        sum += item.chance;
-        if (rand < sum) {
-            return item;
+    for (let i = startXIndex; i < endXIndex; i++) {
+        for (let j = startYIndex; j < endYIndex; j++) {
+            fill(map[i][j]); // Assurez-vous que map[i][j] est une couleur valide
+            rect(i * tileSize, j * tileSize, tileSize, tileSize);
         }
     }
-    return null; // Retourner null si aucune image n'est sélectionnée, représentant une case vide
 }

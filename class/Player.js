@@ -1,10 +1,8 @@
 class Player {
-    constructor(worldX, worldY) {
-        this.x = 750; // Centre de l'écran en x (pour un canvas de 1500px de large)
-        this.y = 500; // Centre de l'écran en y (pour un canvas de 1000px de haut)
-        this.worldX = worldX; // Position x du monde par rapport au joueur
-        this.worldY = worldY; // Position y du monde par rapport au joueur
-        this.speed = 3; // Vitesse de déplacement
+    constructor() {
+        this.x = 500;
+        this.y = 500 ;
+        this.speed = 30; // Vitesse de déplacement
         this.skin = null;
         this.maxHealth = 10;
         this.health = this.maxHealth;
@@ -40,8 +38,8 @@ class Player {
         }
 
         // Appliquer les mouvements tout en respectant les limites de la carte
-        this.x = constrain(this.x + moveX, -2500, 2500);
-        this.y = constrain(this.y + moveY, -2500, 2500);
+        this.x = constrain(this.x + moveX, 0, mapWidth);
+        this.y = constrain(this.y + moveY, 0, mapWidth);
     }
 
     play() {
@@ -55,15 +53,15 @@ class Player {
     drawPlayer() {
         // Dessiner le joueur au centre de l'écran
         if (this.skin) {
-            let spriteWidth = this.skin.width;  // Largeur originale du GIF
-            let spriteHeight = this.skin.height;  // Hauteur originale du GIF
+            let spriteWidth = this.skin.width * 0.5;  // Largeur originale du GIF
+            let spriteHeight = this.skin.height * 0.5;  // Hauteur originale du GIF
 
             // Définir les nouvelles dimensions souhaitées
-            let newWidth = spriteWidth * 0.1;  // Réduire la largeur de 50%
-            let newHeight = spriteHeight * 0.1;  // Réduire la hauteur de 50%
+            let newWidth = spriteWidth * 0.2;  // Réduire la largeur de 50%
+            let newHeight = spriteHeight * 0.2;  // Réduire la hauteur de 50%
 
             // Dessiner le GIF avec les nouvelles dimensions
-            image(this.skin, this.x - newWidth / 2, this.y - newHeight / 2, 64, 64);
+            image(this.skin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
         }
     }
 
