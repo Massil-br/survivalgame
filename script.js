@@ -10,7 +10,7 @@ function preload() {
 }
 
 function setup() {
-    createCanvas(1500, 1000);
+    createCanvas(1280, 720);
     noStroke();
     background(0, 0, 0);
     noiseDetail(5, 0.5);
