@@ -20,7 +20,7 @@ function setup() {
 
 function draw() {
     clear();
-    background(0, 0, 0);
+    background(255);
 
     // Calculer la translation pour centrer le joueur
     let translateX = width / 2 - player.x;
