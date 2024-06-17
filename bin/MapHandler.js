@@ -12,10 +12,10 @@ function makeMap()
 {
 
   map = [];
-  for(let i = 0; i < 200; i++)
+  for(let i = 0; i < 500; i++)
   {
     map[i] = [];
-    for(let j = 0 ; j < 200; j++)
+    for(let j = 0 ; j < 500; j++)
     {
       map[i][j] = pickColor(i, j);
     }
@@ -108,3 +108,8 @@ function drawMap(startX, startY, w, h) {
         }
     }
 }
+
+
+
+
+

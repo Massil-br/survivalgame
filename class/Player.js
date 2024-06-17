@@ -1,10 +1,10 @@
 class Player {
     constructor() {
-        this.x = 500;
-        this.y = 500 ;
-        this.speed = 30; // Vitesse de déplacement
+        this.x = mapWidth/2;
+        this.y = mapHeight/2 ;
+        this.speed = 10; // Vitesse de déplacement
         this.skin = null;
-        this.maxHealth = 10;
+        this.maxHealth = 20;
         this.health = this.maxHealth;
         this.maxXp = 20;
         this.xp = 0;
@@ -38,8 +38,14 @@ class Player {
         }
 
         // Appliquer les mouvements tout en respectant les limites de la carte
+        if (moveX !== 0 && moveY !== 0) {
+            // Correction pour le mouvement diagonal
+            moveX *= Math.sqrt(2) / 2;
+            moveY *= Math.sqrt(2) / 2;
+        }
+
         this.x = constrain(this.x + moveX, 0, mapWidth);
-        this.y = constrain(this.y + moveY, 0, mapWidth);
+        this.y = constrain(this.y + moveY, 0, mapHeight);
     }
 
     play() {

@@ -6,7 +6,6 @@ function preload() {
     window.player = new Player();
     window.player.preload();
 
-   
 }
 
 function setup() {
