@@ -98,8 +98,8 @@ function pickColor(i, j)
 function drawMap(startX, startY, w, h) {
     let startXIndex = Math.max(0, Math.floor(startX / tileSize));
     let startYIndex = Math.max(0, Math.floor(startY / tileSize));
-    let endXIndex = Math.min(mapWidth / tileSize, startXIndex + Math.ceil(w / tileSize));
-    let endYIndex = Math.min(mapHeight / tileSize, startYIndex + Math.ceil(h / tileSize));
+    let endXIndex = Math.min(mapWidth/ tileSize, startXIndex + Math.ceil(20+w / tileSize));
+    let endYIndex = Math.min(mapHeight / tileSize, startYIndex + Math.ceil(20+h / tileSize));
 
     for (let i = startXIndex; i < endXIndex; i++) {
         for (let j = startYIndex; j < endYIndex; j++) {

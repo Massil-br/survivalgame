@@ -34,7 +34,6 @@ class Monster {
         this.checkDeath();
         this.drawMonster();
         this.move();
-        this.attack();
     }
 
     checkDeath() {
