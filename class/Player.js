@@ -2,7 +2,7 @@ class Player {
     constructor() {
         this.x = mapWidth/2;
         this.y = mapHeight/2 ;
-        this.speed = 5; // Vitesse de déplacement
+        this.speed = 30; // Vitesse de déplacement
         this.skin = null;
         this.maxHealth = 20;
         this.health = this.maxHealth;

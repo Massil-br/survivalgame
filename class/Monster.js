@@ -19,6 +19,12 @@ class Monster {
         this.checkLevelUp(player);
     }
 
+    attackPlayer(player) {
+        if (dist(this.x, this.y, player.x, player.y) < this.attackRange) {
+            player.takeDamage(this.damage);
+        }
+    }
+
     checkLevelUp(player) {
         let multiplier = 1.2;
         this.level = player.level;
