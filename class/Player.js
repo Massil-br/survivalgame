@@ -9,8 +9,8 @@ class Player {
         this.maxXp = 20;
         this.xp = 0;
         this.level = 1;
-        this.damage = 1;
-        this.attackRange = 3*tileSize;
+        this.damage = 10;
+        this.attackRange = 5*tileSize;
         this.attackCoolDown = 3*60;
         this.coolDown = 0;
         this.defense = 1;
@@ -25,7 +25,7 @@ class Player {
     }
 
     attack(monster){
-        if (this.coolDown <=0 && dist(this.x,this.y,monster.x,monster.y)<=this.attackRange){
+        if (this.coolDown <=0 && dist(this.x, this.y ,monster.x,monster.y)<=this.attackRange && !this.dead){
             monster.health -= this.damage;
             this.coolDown = this.attackCoolDown;
         }

@@ -38,15 +38,14 @@ function draw() {
     // Dessiner seulement la partie de la carte visible autour du joueur
     drawMap(player.x - width / 2, player.y - height / 2, width, height);
      // Dessiner tous les monstres
+     window.player.play();
      monsters.forEach(monster => {
         player.attack(monster);
         monster.Play();
     });
 
-    window.player.play();
-    
-    
    
+    
 }
 
 
