@@ -15,6 +15,7 @@ function preload() {
 
 function setup() {
     createCanvas(1280, 720);
+    frameRate(60);
     noStroke();
     background(0, 0, 0);
     noiseDetail(5, 0.5);

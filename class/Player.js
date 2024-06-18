@@ -10,8 +10,8 @@ class Player {
         this.xp = 0;
         this.level = 1;
         this.damage = 1;
-        this.attackRange = 3;
-        this.attackSpeed = 1.5;
+        this.attackRange = 3*tileSize;
+        this.attackCoolDown = 3*60;
         this.defense = 1;
         this.dead = false;
     }
