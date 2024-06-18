@@ -42,6 +42,9 @@ function draw() {
      monsters.forEach(monster => {
         player.attack(monster);
         monster.Play();
+        if (monster.dead){
+            monsters.splice(monsters.indexOf(monster), 1);
+        }
     });
 
    
