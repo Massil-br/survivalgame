@@ -27,7 +27,7 @@ class Monster {
     }
 
     attackPlayer(player) {
-        if (dist(this.x, this.y, player.x, player.y) < this.attackRange && this.cooldown <= 0) {
+        if (dist(this.x, this.y, player.x, player.y) < this.attackRange && this.cooldown <= 0 && !this.dead) {
             player.health -= this.damage;
             this.cooldown = this.attackCoolDown; // Réinitialiser le cooldown
         }
@@ -63,7 +63,7 @@ class Monster {
     }
 
     drawMonster() {
-        if (this.skin) {
+        if (this.skin && !this.dead) {
             let spriteWidth = 24; // Largeur originale du sprite dans le spritesheet
             let spriteHeight = 24; // Hauteur originale du sprite dans le spritesheet
             let cols = 3; // Nombre de colonnes dans le spritesheet
@@ -84,8 +84,6 @@ class Monster {
 
             // Dessiner le sprite redimensionné à tileSize
             image(this.skin, dx, dy, tileSize, tileSize, sx, sy, spriteWidth, spriteHeight);
-        } else {
-            console.log("Skin not loaded");
         }
     }
 }

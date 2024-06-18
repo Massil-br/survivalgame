@@ -12,9 +12,23 @@ class Player {
         this.damage = 1;
         this.attackRange = 3*tileSize;
         this.attackCoolDown = 3*60;
+        this.coolDown = 0;
         this.defense = 1;
         this.dead = false;
         this.deadSkin = null;
+    }
+
+    update(){
+        if (this.coolDown > 0){
+            this.coolDown--;
+        }
+    }
+
+    attack(monster){
+        if (this.coolDown <=0 && dist(this.x,this.y,monster.x,monster.y)<=this.attackRange){
+            monster.health -= this.damage;
+            this.coolDown = this.attackCoolDown;
+        }
     }
 
     preload() {
@@ -29,13 +43,13 @@ class Player {
         if (keyIsDown(90) && !this.dead) { // Z
             moveY -= this.speed;
         }
-        if (keyIsDown(81) && !this.dead) { // Q
+        if (keyIsDown(81 )&& ! this.dead) { // Q
             moveX -= this.speed;
         }
-        if (keyIsDown(83) && !this.dead) { // S
+        if (keyIsDown(83)&&!this.dead) { // S
             moveY += this.speed;
         }
-        if (keyIsDown(68) && !this.dead) { // D
+        if (keyIsDown(68)&&!this.dead) { // D
             moveX += this.speed;
         }
 
@@ -51,6 +65,7 @@ class Player {
     }
 
     play() {
+        this.update();
         this.handleInput();
         this.checkLevelUp();
         this.checkDeath();
