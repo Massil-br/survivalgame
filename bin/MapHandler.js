@@ -10,16 +10,16 @@ let tileSize = 50; // Ajustez cette valeur selon la taille souhaitée pour les t
 
 function makeMap()
 {
+    let numTilesWide = mapWidth / tileSize;
+    let numTilesHigh = mapHeight / tileSize;
 
-  map = [];
-  for(let i = 0; i < 500; i++)
-  {
-    map[i] = [];
-    for(let j = 0 ; j < 500; j++)
-    {
-      map[i][j] = pickColor(i, j);
+    map = [];
+    for (let i = 0; i < numTilesWide; i++) {
+        map[i] = [];
+        for (let j = 0; j < numTilesHigh; j++) {
+            map[i][j] = pickColor(i, j);
+        }
     }
-  }
 }
 
 function pickColor(i, j)
@@ -98,18 +98,13 @@ function pickColor(i, j)
 function drawMap(startX, startY, w, h) {
     let startXIndex = Math.max(0, Math.floor(startX / tileSize));
     let startYIndex = Math.max(0, Math.floor(startY / tileSize));
-    let endXIndex = Math.min(mapWidth/ tileSize, startXIndex + Math.ceil(1+w / tileSize));
+    let endXIndex = Math.min(mapWidth / tileSize, startXIndex + Math.ceil(1+w / tileSize));
     let endYIndex = Math.min(mapHeight / tileSize, startYIndex + Math.ceil(1+h / tileSize));
 
     for (let i = startXIndex; i < endXIndex; i++) {
         for (let j = startYIndex; j < endYIndex; j++) {
-            fill(map[i][j]); // Assurez-vous que map[i][j] est une couleur valide
+            fill(map[i][j]);
             rect(i * tileSize, j * tileSize, tileSize, tileSize);
         }
     }
 }
-
-
-
-
-
