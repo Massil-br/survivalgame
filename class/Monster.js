@@ -1,7 +1,6 @@
 class Monster {
     randomPosition(center) {
-        let range = 50;
-        return Math.random() * (2 * range) + (center - range);
+        return Math.random(0,mapHeight) ;
     }
 
     constructor(player) {
@@ -16,6 +15,7 @@ class Monster {
         this.speed = 0.5;
         this.attackRange = 2;
         this.attackSpeed = 1;
+        this.skin = null;
         this.checkLevelUp(player);
     }
 
@@ -33,7 +33,6 @@ class Monster {
     Play() {
         this.checkDeath();
         this.drawMonster();
-        this.move();
     }
 
     checkDeath() {
@@ -44,14 +43,14 @@ class Monster {
     }
 
     preload() {
-        this.skin = loadImage("assets/monster.png");
+        this.skin = loadImage("Assets/slime_monster_spritesheet.png");
     }
 
     drawMonster() {
         if (this.skin) {
-            let spriteWidth = this.skin.width / 2;
-            let spriteHeight = this.skin.height / 5;
-            image(this.skin, 0, 0, spriteWidth, spriteHeight, 0, 0, spriteWidth, spriteHeight);
+            let spriteWidth = this.skin.width / 3;
+            let spriteHeight = this.skin.height / 3;
+            image(this.skin, this.x, this.y, spriteWidth, spriteHeight, 24, 48, spriteWidth, spriteHeight);
         }
     }
 }

@@ -2,7 +2,7 @@ class Player {
     constructor() {
         this.x = mapWidth/2;
         this.y = mapHeight/2 ;
-        this.speed = 10; // Vitesse de déplacement
+        this.speed = 5; // Vitesse de déplacement
         this.skin = null;
         this.maxHealth = 20;
         this.health = this.maxHealth;
@@ -57,14 +57,11 @@ class Player {
     }
 
     drawPlayer() {
-        // Dessiner le joueur au centre de l'écran
+        // Assurez-vous que la skin du joueur est chargée
         if (this.skin) {
-            let spriteWidth = this.skin.width * 0.5;  // Largeur originale du GIF
-            let spriteHeight = this.skin.height * 0.5;  // Hauteur originale du GIF
-
-            // Définir les nouvelles dimensions souhaitées
-            let newWidth = spriteWidth * 0.2;  // Réduire la largeur de 50%
-            let newHeight = spriteHeight * 0.2;  // Réduire la hauteur de 50%
+            // Utiliser tileSize pour définir les nouvelles dimensions
+            let newWidth = tileSize;  // Largeur de la tuile
+            let newHeight = tileSize; // Hauteur de la tuile
 
             // Dessiner le GIF avec les nouvelles dimensions
             image(this.skin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
