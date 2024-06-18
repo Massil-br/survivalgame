@@ -1,5 +1,4 @@
-let mapWidth = 500*tileSize;
-let mapHeight = 500*tileSize;
+
 let monsters = [];
 
 function preload() {

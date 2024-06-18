@@ -7,6 +7,8 @@ let grass = "#7ec850";
 let stone = "#676767";
 let snow = "#fffafa";
 let tileSize = 50; // Ajustez cette valeur selon la taille souhaitée pour les tuiles de la carte
+let mapWidth = 500*tileSize;
+let mapHeight = 500*tileSize;
 
 function makeMap()
 {
