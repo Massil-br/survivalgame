@@ -1,5 +1,5 @@
-let mapWidth = 10000;
-let mapHeight = 10000;
+let mapWidth = 500*tileSize;
+let mapHeight = 500*tileSize;
 let monsters = [];
 
 function preload() {
@@ -19,9 +19,9 @@ function setup() {
     noStroke();
     background(0, 0, 0);
     noiseDetail(5, 0.5);
-    makeMap(player.x - width/2, player.y-height/2, width, height);
+    makeMap();
     drawMap();
-    spawnMonsters(20);
+    spawnMonsters(500);
 }
 
 
