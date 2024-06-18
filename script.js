@@ -15,6 +15,7 @@ function preload() {
 
 function setup() {
     createCanvas(1280, 720);
+    frameRate(60);
     noStroke();
     background(0, 0, 0);
     noiseDetail(5, 0.5);
@@ -38,10 +39,12 @@ function draw() {
     drawMap(player.x - width / 2, player.y - height / 2, width, height);
      // Dessiner tous les monstres
      monsters.forEach(monster => {
+        player.attack(monster);
         monster.Play();
     });
 
     window.player.play();
+    
     
    
 }

@@ -10,30 +10,46 @@ class Player {
         this.xp = 0;
         this.level = 1;
         this.damage = 1;
-        this.attackRange = 3;
-        this.attackSpeed = 1.5;
+        this.attackRange = 3*tileSize;
+        this.attackCoolDown = 3*60;
+        this.coolDown = 0;
         this.defense = 1;
         this.dead = false;
+        this.deadSkin = null;
+    }
+
+    update(){
+        if (this.coolDown > 0){
+            this.coolDown--;
+        }
+    }
+
+    attack(monster){
+        if (this.coolDown <=0 && dist(this.x,this.y,monster.x,monster.y)<=this.attackRange){
+            monster.health -= this.damage;
+            this.coolDown = this.attackCoolDown;
+        }
     }
 
     preload() {
         this.skin = loadImage("Assets/Player/GIF_/player_idle.gif"); 
+        this.deadSkin = loadImage("Assets/Player/PNG_/07-Dead/Dead10.png")
     }
 
     handleInput() {
         let moveX = 0;
         let moveY = 0;
 
-        if (keyIsDown(90)) { // Z
+        if (keyIsDown(90) && !this.dead) { // Z
             moveY -= this.speed;
         }
-        if (keyIsDown(81)) { // Q
+        if (keyIsDown(81 )&& ! this.dead) { // Q
             moveX -= this.speed;
         }
-        if (keyIsDown(83)) { // S
+        if (keyIsDown(83)&&!this.dead) { // S
             moveY += this.speed;
         }
-        if (keyIsDown(68)) { // D
+        if (keyIsDown(68)&&!this.dead) { // D
             moveX += this.speed;
         }
 
@@ -49,6 +65,7 @@ class Player {
     }
 
     play() {
+        this.update();
         this.handleInput();
         this.checkLevelUp();
         this.checkDeath();
@@ -58,13 +75,20 @@ class Player {
 
     drawPlayer() {
         // Assurez-vous que la skin du joueur est chargée
-        if (this.skin) {
+        if (this.skin&& !this.dead) {
             // Utiliser tileSize pour définir les nouvelles dimensions
             let newWidth = tileSize;  // Largeur de la tuile
             let newHeight = tileSize; // Hauteur de la tuile
 
             // Dessiner le GIF avec les nouvelles dimensions
             image(this.skin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
+        }else if (this.deadSkin && this.dead){
+             // Utiliser tileSize pour définir les nouvelles dimensions
+             let newWidth = tileSize;  // Largeur de la tuile
+             let newHeight = tileSize; // Hauteur de la tuile
+ 
+             // Dessiner le GIF avec les nouvelles dimensions
+             image(this.deadSkin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
         }
     }
 

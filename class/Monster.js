@@ -10,18 +10,26 @@ class Monster {
         this.maxHealth = 3;
         this.dead = false;
         this.health = this.maxHealth;
-        this.damage = 0.5;
+        this.damage = 10;
         this.defense = 1;
         this.speed = 0.5;
-        this.attackRange = 2;
-        this.attackSpeed = 1;
+        this.attackRange = 2 * tileSize;
+        this.attackCoolDown = 5 * 60; // 10 secondes * 60 FPS = 600 frames
+        this.cooldown = 0; // Cooldown initialisé à 0
         this.skin = null;
         this.checkLevelUp(player);
     }
 
+    update() {
+        if (this.cooldown > 0) {
+            this.cooldown--; // Décrémenter le cooldown à chaque frame
+        }
+    }
+
     attackPlayer(player) {
-        if (dist(this.x, this.y, player.x, player.y) < this.attackRange) {
-            player.takeDamage(this.damage);
+        if (dist(this.x, this.y, player.x, player.y) < this.attackRange && this.cooldown <= 0 && !this.dead) {
+            player.health -= this.damage;
+            this.cooldown = this.attackCoolDown; // Réinitialiser le cooldown
         }
     }
 
@@ -33,12 +41,14 @@ class Monster {
         this.damage = this.damage * (multiplier * this.level);
         this.defense = this.defense * (multiplier * this.level);
         this.speed = this.speed * (multiplier * this.level);
-        this.attackSpeed = this.attackSpeed * (multiplier * this.level);
+        this.attackCoolDown = this.attackCoolDown - (multiplier * this.level);
     }
 
     Play() {
+        this.update(); // Assurez-vous d'appeler update dans Play
         this.checkDeath();
         this.drawMonster();
+        this.attackPlayer(player);
     }
 
     checkDeath() {
@@ -53,7 +63,7 @@ class Monster {
     }
 
     drawMonster() {
-        if (this.skin) {
+        if (this.skin && !this.dead) {
             let spriteWidth = 24; // Largeur originale du sprite dans le spritesheet
             let spriteHeight = 24; // Hauteur originale du sprite dans le spritesheet
             let cols = 3; // Nombre de colonnes dans le spritesheet
@@ -74,8 +84,6 @@ class Monster {
 
             // Dessiner le sprite redimensionné à tileSize
             image(this.skin, dx, dy, tileSize, tileSize, sx, sy, spriteWidth, spriteHeight);
-        } else {
-            console.log("Skin not loaded");
         }
     }
 }
