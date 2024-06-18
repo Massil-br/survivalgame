@@ -18,6 +18,7 @@ class Player {
         this.deadSkin = null;
         this.moveX = 0;
         this.moveY = 0;
+        this.lastDirection = "right"; // Direction initiale par défaut
     }
 
     update(){
@@ -46,19 +47,17 @@ class Player {
     
         if (keyIsDown(90) && !this.dead) { // Z
             this.moveY -= this.speed;
-            this.runinverted
         }
         if (keyIsDown(81) && !this.dead) { // Q
             this.moveX -= this.speed;
-            this.runinverted
+            this.lastDirection = "left";
         }
         if (keyIsDown(83) && !this.dead) { // S
             this.moveY += this.speed;
-            this.run
         }
         if (keyIsDown(68) && !this.dead) { // D
             this.moveX += this.speed;
-            this.run
+            this.lastDirection = "right";
         }
     
         // Appliquer les mouvements tout en respectant les limites de la carte
@@ -85,16 +84,23 @@ class Player {
     drawPlayer() {
         let newWidth = tileSize;  // Largeur de la tuile
         let newHeight = tileSize; 
-
+    
+ 
         if (this.skin&& !this.dead && this.moveX == 0 && this.moveY == 0) {
         
             image(this.skin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
         }else if (this.deadSkin && this.dead){
              image(this.deadSkin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
-        }else if  (this.run && this.moveX > 0){
+        }else if  (this.run && this.moveX > 0 )  {
             image(this.run, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
-        }else if (this.runinverted && this.moveX < 0){
+        }else if (this.runinverted  && this.moveX < 0 ){
             image(this.runinverted, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
+        }else if (this.moveY != 0) {
+            if (this.lastDirection == "right") {
+                image(this.run, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
+            } else {
+                image(this.runinverted, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
+            }
         }
     }
 
