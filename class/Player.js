@@ -34,10 +34,10 @@ class Player {
     }
 
     preload() {
-        this.skin = loadImage("Assets/Player/GIF_/player_idle.gif"); 
-        this.deadSkin = loadImage("Assets/Player/PNG_/07-Dead/Dead10.png")
-        this.run = loadImage("Assets/Player/GIF_/player_run.gif");
-        this.runinverted = loadImage("Assets/Player/GIF_/inverted_player_run.gif");
+        this.skin = loadImage("./Assets/Player/GIF_/player_idle.gif"); 
+        this.deadSkin = loadImage("./Assets/Player/PNG_/07-Dead/Dead10.png")
+        this.runinverted = loadImage("./Assets/Player/GIF_/player_run.gif");
+        this.run = loadImage("./Assets/Player/GIF_/inverted_player_run.gif");
     }
 
     handleInput() {
@@ -46,19 +46,19 @@ class Player {
     
         if (keyIsDown(90) && !this.dead) { // Z
             this.moveY -= this.speed;
-            
+            this.runinverted
         }
         if (keyIsDown(81) && !this.dead) { // Q
             this.moveX -= this.speed;
-            
+            this.runinverted
         }
         if (keyIsDown(83) && !this.dead) { // S
             this.moveY += this.speed;
-            
+            this.run
         }
         if (keyIsDown(68) && !this.dead) { // D
             this.moveX += this.speed;
-            
+            this.run
         }
     
         // Appliquer les mouvements tout en respectant les limites de la carte
@@ -83,21 +83,18 @@ class Player {
     }
 
     drawPlayer() {
-        // Assurez-vous que la skin du joueur est chargée
-        if (this.skin&& !this.dead && this.moveX == 0 && this.moveY == 0) {
-            // Utiliser tileSize pour définir les nouvelles dimensions
-            let newWidth = tileSize;  // Largeur de la tuile
-            let newHeight = tileSize; // Hauteur de la tuile
+        let newWidth = tileSize;  // Largeur de la tuile
+        let newHeight = tileSize; 
 
-            // Dessiner le GIF avec les nouvelles dimensions
+        if (this.skin&& !this.dead && this.moveX == 0 && this.moveY == 0) {
+        
             image(this.skin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
         }else if (this.deadSkin && this.dead){
-             // Utiliser tileSize pour définir les nouvelles dimensions
-             let newWidth = tileSize;  // Largeur de la tuile
-             let newHeight = tileSize; // Hauteur de la tuile
- 
-             // Dessiner le GIF avec les nouvelles dimensions
              image(this.deadSkin, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
+        }else if  (this.run && this.moveX > 0){
+            image(this.run, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
+        }else if (this.runinverted && this.moveX < 0){
+            image(this.runinverted, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
         }
     }
 
