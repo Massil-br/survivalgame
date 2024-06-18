@@ -16,6 +16,8 @@ class Player {
         this.defense = 1;
         this.dead = false;
         this.deadSkin = null;
+        this.moveX = 0;
+        this.moveY = 0;
     }
 
     update(){
@@ -34,35 +36,42 @@ class Player {
     preload() {
         this.skin = loadImage("Assets/Player/GIF_/player_idle.gif"); 
         this.deadSkin = loadImage("Assets/Player/PNG_/07-Dead/Dead10.png")
+        this.run = loadImage("Assets/Player/GIF_/player_run.gif");
+        this.runinverted = loadImage("Assets/Player/GIF_/inverted_player_run.gif");
     }
 
     handleInput() {
-        let moveX = 0;
-        let moveY = 0;
-
+        this.moveX = 0;
+        this.moveY = 0;
+    
         if (keyIsDown(90) && !this.dead) { // Z
-            moveY -= this.speed;
+            this.moveY -= this.speed;
+            
         }
-        if (keyIsDown(81 )&& ! this.dead) { // Q
-            moveX -= this.speed;
+        if (keyIsDown(81) && !this.dead) { // Q
+            this.moveX -= this.speed;
+            
         }
-        if (keyIsDown(83)&&!this.dead) { // S
-            moveY += this.speed;
+        if (keyIsDown(83) && !this.dead) { // S
+            this.moveY += this.speed;
+            
         }
-        if (keyIsDown(68)&&!this.dead) { // D
-            moveX += this.speed;
+        if (keyIsDown(68) && !this.dead) { // D
+            this.moveX += this.speed;
+            
         }
-
+    
         // Appliquer les mouvements tout en respectant les limites de la carte
-        if (moveX !== 0 && moveY !== 0) {
+        if (this.moveX !== 0 && this.moveY !== 0) {
             // Correction pour le mouvement diagonal
-            moveX *= Math.sqrt(2) / 2;
-            moveY *= Math.sqrt(2) / 2;
+            this.moveX *= Math.sqrt(2) / 2;
+            this.moveY *= Math.sqrt(2) / 2;
+        }
+    
+        this.x = constrain(this.x + this.moveX, 0, mapWidth);
+        this.y = constrain(this.y + this.moveY, 0, mapHeight);
         }
 
-        this.x = constrain(this.x + moveX, 0, mapWidth);
-        this.y = constrain(this.y + moveY, 0, mapHeight);
-    }
 
     play() {
         this.update();
@@ -75,7 +84,7 @@ class Player {
 
     drawPlayer() {
         // Assurez-vous que la skin du joueur est chargée
-        if (this.skin&& !this.dead) {
+        if (this.skin&& !this.dead && this.moveX == 0 && this.moveY == 0) {
             // Utiliser tileSize pour définir les nouvelles dimensions
             let newWidth = tileSize;  // Largeur de la tuile
             let newHeight = tileSize; // Hauteur de la tuile
