@@ -48,9 +48,28 @@ class Monster {
 
     drawMonster() {
         if (this.skin) {
-            let spriteWidth = this.skin.width / 3;
-            let spriteHeight = this.skin.height / 3;
-            image(this.skin, this.x, this.y, spriteWidth, spriteHeight, 24, 48, spriteWidth, spriteHeight);
+            let spriteWidth = 24; // Largeur originale du sprite dans le spritesheet
+            let spriteHeight = 24; // Hauteur originale du sprite dans le spritesheet
+            let cols = 3; // Nombre de colonnes dans le spritesheet
+            let rows = 3; // Nombre de lignes dans le spritesheet
+
+            // Calculer la position de la 7ème image
+            let frameIndex = 6; // 7ème image, indexation à partir de 0
+            let col = frameIndex % cols;
+            let row = Math.floor(frameIndex / cols);
+
+            // Coordonnées du sprite à découper dans le spritesheet
+            let sx = col * spriteWidth;
+            let sy = row * spriteHeight;
+
+            // Coordonnées où le sprite doit être dessiné sur le canevas
+            let dx = this.x - tileSize / 2;
+            let dy = this.y - tileSize / 2;
+
+            // Dessiner le sprite redimensionné à tileSize
+            image(this.skin, dx, dy, tileSize, tileSize, sx, sy, spriteWidth, spriteHeight);
+        } else {
+            console.log("Skin not loaded");
         }
     }
 }
