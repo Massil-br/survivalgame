@@ -10,11 +10,11 @@ class Monster {
         this.maxHealth = 3;
         this.dead = false;
         this.health = this.maxHealth;
-        this.damage = 0.5;
+        this.damage = 10;
         this.defense = 1;
         this.speed = 0.5;
         this.attackRange = 2 * tileSize;
-        this.attackCoolDown = 10 * 60; // 10 secondes * 60 FPS = 600 frames
+        this.attackCoolDown = 5 * 60; // 10 secondes * 60 FPS = 600 frames
         this.cooldown = 0; // Cooldown initialisé à 0
         this.skin = null;
         this.checkLevelUp(player);
