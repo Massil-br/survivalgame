@@ -1,4 +1,3 @@
-
 let monsters = [];
 
 function preload() {
@@ -21,6 +20,8 @@ function setup() {
     makeMap();
     drawMap();
     spawnMonsters(500);
+
+   
 }
 
 function setMapSize(newWidth, newHeight) {
@@ -55,10 +56,8 @@ function draw() {
     drawMap(player.x - width / 2, player.y - height / 2, width, height);
      // Dessiner tous les monstres
      window.player.play();
-     monsters = monsters.filter(monster => {
-        player.attack(monster);
+     monsters.forEach(monster => {
         monster.Play();
-        return !monster.dead;
     });
 }
 
@@ -76,4 +75,15 @@ function spawnMonsters(numMonsters) {
     }
 }
 
-setMapSize(600, 400);  // Exemple pour redimensionner la carte à 600x400 tuiles
+setMapSize(600, 600);  // Exemple pour redimensionner la carte à 600x400 tuiles
+function mousePressed() {
+    // Calculer la translation pour centrer le joueur
+    let translateX = width / 2 - player.x;
+    let translateY = height / 2 - player.y;
+
+    // Ajuster les coordonnées de la souris en fonction de la translation
+    let adjustedMouseX = mouseX - translateX;
+    let adjustedMouseY = mouseY - translateY;
+
+    player.shootProjectile(adjustedMouseX, adjustedMouseY);
+}

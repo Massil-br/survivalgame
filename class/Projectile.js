@@ -1,32 +1,29 @@
 class Projectile {
-    constructor(x, y, direction, speed) {
+    constructor(x, y, angle, speed, range) {
         this.x = x;
         this.y = y;
-        this.direction = direction;
+        this.angle = angle;
         this.speed = speed;
+        this.range = range;
+        this.distanceTraveled = 0;
         this.active = true;
+        this.image = loadImage("./Assets/Items/arrow.png"); // Charger l'image de la flèche
     }
 
     update() {
-        if (this.direction === "right") {
-            this.x += this.speed;
-        } else if (this.direction === "left") {
-            this.x -= this.speed;
-        } else if (this.direction === "up") {
-            this.x -= this.speed;
-        }  else if (this.direction === "down") {
-            this.x -= this.speed;
-        }
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.distanceTraveled += this.speed;
 
-
-
-        // Désactiver le projectile s'il sort de la carte
-        if (this.x < 0 || this.x > mapWidth || this.y < 0 || this.y > mapHeight) {
+        if (this.distanceTraveled >= this.range) {
             this.active = false;
         }
+    
     }
 
     draw() {
-        loadImage("./Assets/Items/arrow.png"); 
+        if (this.active) {
+            image(this.image, this.x, this.y, tileSize / 2, tileSize / 2);
+        }
     }
 }

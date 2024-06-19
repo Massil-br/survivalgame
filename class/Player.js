@@ -11,26 +11,40 @@ class Player {
         this.level = 1;
         this.damage = 10;
         this.attackRange = 5*tileSize;
-        this.attackCoolDown = 3*60;
-        this.coolDown = 0;
+        this.attackCoolDown = 3*60; // Cooldown en frames (3 secondes à 60 FPS)
+        this.cooldown = 0; // Initialement, pas de cooldown
         this.defense = 1;
         this.dead = false;
         this.deadSkin = null;
         this.moveX = 0;
         this.moveY = 0;
         this.lastDirection = "right"; // Direction initiale par défaut
+        this.projectiles = [];
     }
 
     update(){
-        if (this.coolDown > 0){
-            this.coolDown--;
+        if (this.cooldown > 0){
+            this.cooldown--;
         }
+        this.projectiles = this.projectiles.filter(projectile => projectile.active);
+        this.projectiles.forEach(projectile => {
+            projectile.update();
+            monsters.forEach(monster => {
+                if (dist(projectile.x, projectile.y, monster.x, monster.y) < tileSize / 2) {
+                    monster.health -= this.damage;
+                    projectile.active = false; // Désactiver le projectile après avoir touché un monstre
+                }
+            });
+        });
     }
 
-    attack(monster){
-        if (this.coolDown <=0 && dist(this.x, this.y ,monster.x,monster.y)<=this.attackRange && !this.dead){
-            monster.health -= this.damage;
-            this.coolDown = this.attackCoolDown;
+    shootProjectile(targetX, targetY) {
+        if (!this.dead && this.cooldown === 0) {
+            let angle = Math.atan2(targetY - this.y, targetX - this.x);
+            let speed = 10; // Vitesse de la flèche
+            let projectile = new Projectile(this.x, this.y, angle, speed, this.attackRange);
+            this.projectiles.push(projectile);
+            this.cooldown = this.attackCoolDown; // Réinitialiser le cooldown
         }
     }
 
@@ -79,6 +93,7 @@ class Player {
         this.checkDeath();
         this.drawPlayer();
         this.drawHealthBar(); // Dessiner la barre de santé
+        this.drawCooldownBar(); // Dessiner la barre de cooldown
     }
 
     drawPlayer() {
@@ -102,6 +117,7 @@ class Player {
                 image(this.runinverted, this.x - newWidth / 2, this.y - newHeight / 2, newWidth, newHeight);
             }
         }
+        this.projectiles.forEach(projectile => projectile.draw());
     }
 
     checkLevelUp() {
@@ -143,6 +159,28 @@ class Player {
         // Dessiner la barre de santé actuelle
         fill(255, 0, 0); // Couleur rouge pour la santé
         rect(20, 20, barWidth * healthRatio, barHeight); // Ajuster la largeur selon la santé actuelle
+
+        // Restaurer l'état précédent du système de coordonnées
+        pop();
+    }
+
+    drawCooldownBar() {
+        // Sauvegarder l'état actuel du système de coordonnées
+        push();
+        // Réinitialiser la transformation pour dessiner la barre de cooldown en coordonnées absolues de l'écran
+        resetMatrix();
+
+        let barWidth = 200; // Largeur de la barre de cooldown
+        let barHeight = 20; // Hauteur de la barre de cooldown
+        let cooldownRatio = (this.attackCoolDown - this.cooldown) / this.attackCoolDown; // Ratio du cooldown actuel
+
+        // Dessiner le fond de la barre de cooldown
+        fill(0, 0, 0); // Couleur noire pour le fond
+        rect(20, 50, barWidth, barHeight); // Position et dimensions du fond
+
+        // Dessiner la barre de cooldown actuelle
+        fill(0, 0, 255); // Couleur bleue pour le cooldown
+        rect(20, 50, barWidth * cooldownRatio, barHeight); // Ajuster la largeur selon le cooldown actuel
 
         // Restaurer l'état précédent du système de coordonnées
         pop();
