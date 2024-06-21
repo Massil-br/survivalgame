@@ -42,7 +42,7 @@ class Player {
         if (!this.dead && this.cooldown === 0) {
             let angle = Math.atan2(targetY - this.y, targetX - this.x);
             let speed = 10; // Vitesse de la flèche
-            let projectile = new Projectile(this.x, this.y, angle, speed, this.attackRange);
+            let projectile = new Projectile(this.x, this.y, angle, speed*0.5 , this.attackRange);
             this.projectiles.push(projectile);
             this.cooldown = this.attackCoolDown; // Réinitialiser le cooldown
         }

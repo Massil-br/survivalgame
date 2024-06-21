@@ -18,7 +18,6 @@ class Projectile {
         if (this.distanceTraveled >= this.range) {
             this.active = false;
         }
-    
     }
 
     draw() {

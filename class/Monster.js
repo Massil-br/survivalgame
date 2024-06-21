@@ -8,7 +8,6 @@ class Monster {
         this.y = this.randomPosition(player.y);
         this.level = 1;
         this.maxHealth = 3;
-        this.dead = false;
         this.health = this.maxHealth;
         this.damage = 10;
         this.defense = 1;
@@ -18,6 +17,7 @@ class Monster {
         this.cooldown = 0; // Cooldown initialisé à 0
         this.skin = null;
         this.checkLevelUp(player);
+        this.dead = false;
     }
 
     update() {
@@ -45,7 +45,7 @@ class Monster {
     }
 
     Play() {
-        if (!this.isDead) {
+        if (!this.dead) {
             this.update();
             this.checkDeath();
             this.drawMonster();

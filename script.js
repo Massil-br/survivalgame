@@ -55,16 +55,36 @@ function draw() {
     // Dessiner seulement la partie de la carte visible autour du joueur
     drawMap(player.x - width / 2, player.y - height / 2, width, height);
 
-    // Dessiner tous les monstres
+    // Mettre à jour et dessiner le joueur
     window.player.play();
-    for (let i = monsters.length - 1; i >= 0; i--) {
-        let monster = monsters[i];
-        if (monster.isDead) {
-            monsters.splice(i, 1);
-        } else {
-            monster.Play();
-        }
-    }
+
+    // Mettre à jour et dessiner les monstres
+    monsters.forEach(monster => {
+        monster.Play();
+    });
+
+    // Mettre à jour et dessiner les projectiles
+    player.projectiles.forEach(projectile => {
+        projectile.update();
+        projectile.draw();
+    });
+
+    // Gérer les collisions entre projectiles et monstres
+    player.projectiles.forEach(projectile => {
+        monsters.forEach(monster => {
+            if (!monster.dead && projectile.active && dist(projectile.x, projectile.y, monster.x, monster.y) < tileSize / 2) {
+                monster.health -= player.damage;
+                projectile.active = false; // Désactiver le projectile après avoir touché un monstre
+                monster.checkDeath(); // Vérifier si le monstre est mort
+            }
+        });
+    });
+
+    // Supprimer les projectiles inactifs
+    player.projectiles = player.projectiles.filter(projectile => projectile.active);
+
+    // Supprimer les monstres morts
+    monsters = monsters.filter(monster => !monster.dead);
 }
 
 function spawnMonsters(numMonsters) {
