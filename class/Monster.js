@@ -8,8 +8,8 @@ class Monster {
         this.y = this.randomPosition(player.y);
         this.level = 1;
         this.maxHealth = 3;
-        this.health = 100; // Exemple de valeur de santé
-        this.isDead = false;
+        this.dead = false;
+        this.health = this.maxHealth;
         this.damage = 10;
         this.defense = 1;
         this.speed = 0.5;
@@ -23,9 +23,6 @@ class Monster {
     update() {
         if (this.cooldown > 0) {
             this.cooldown--; // Décrémenter le cooldown à chaque frame
-        }
-        if (this.health <= 0) {
-            this.isDead = true;
         }
     }
 
