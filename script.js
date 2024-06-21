@@ -33,7 +33,7 @@ function setMapSize(newWidth, newHeight) {
 }
 
 function updateEntitiesPositions() {
-    // Assurez-vous que toutes les entités sont toujours à l'intérieur des limites de la carte
+   // pour maintenir  à l'interieur de la map
     window.player.x = Math.min(window.player.x, mapWidth);
     window.player.y = Math.min(window.player.y, mapHeight);
 
@@ -54,14 +54,18 @@ function draw() {
 
     // Dessiner seulement la partie de la carte visible autour du joueur
     drawMap(player.x - width / 2, player.y - height / 2, width, height);
-     // Dessiner tous les monstres
-     window.player.play();
-     monsters.forEach(monster => {
-        monster.Play();
-    });
+
+    // Dessiner tous les monstres
+    window.player.play();
+    for (let i = monsters.length - 1; i >= 0; i--) {
+        let monster = monsters[i];
+        if (monster.isDead) {
+            monsters.splice(i, 1);
+        } else {
+            monster.Play();
+        }
+    }
 }
-
-
 
 function spawnMonsters(numMonsters) {
     for (let i = 0; i < numMonsters; i++) {
