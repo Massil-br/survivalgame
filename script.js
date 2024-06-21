@@ -20,7 +20,7 @@ function setup() {
     makeMap();
     drawMap();
     spawnMonsters(500);
-
+    setMapSize(600, 600);
    
 }
 
@@ -75,7 +75,7 @@ function spawnMonsters(numMonsters) {
     }
 }
 
-setMapSize(600, 600);  // Exemple pour redimensionner la carte à 600x400 tuiles
+  
 function mousePressed() {
     // Calculer la translation pour centrer le joueur
     let translateX = width / 2 - player.x;

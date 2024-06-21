@@ -7,7 +7,7 @@ class Projectile {
         this.range = range;
         this.distanceTraveled = 0;
         this.active = true;
-        this.image = loadImage("./Assets/Items/arrow.png"); // Charger l'image de la flèche
+        this.image = loadImage("./Assets/Items/flame_hrise.png"); // Charger l'image de la flèche
     }
 
     update() {
@@ -23,7 +23,12 @@ class Projectile {
 
     draw() {
         if (this.active) {
-            image(this.image, this.x, this.y, tileSize / 2, tileSize / 2);
+            push();
+            translate(this.x, this.y);
+            rotate(this.angle);
+            imageMode(CENTER);
+            image(this.image, 0, 0, tileSize / 2, tileSize / 2);
+            pop();
         }
     }
 }
