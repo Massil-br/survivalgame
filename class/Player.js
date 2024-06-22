@@ -42,7 +42,7 @@ class Player {
         if (!this.dead && this.cooldown === 0) {
             let angle = Math.atan2(targetY - this.y, targetX - this.x);
             let speed = 10; // Vitesse de la flèche
-            let projectile = new Projectile(this.x, this.y, angle, speed*0.5 , this.attackRange);
+            let projectile = new Projectile(this.x, this.y, angle, (speed*0.7), this.attackRange);
             this.projectiles.push(projectile);
             this.cooldown = this.attackCoolDown; // Réinitialiser le cooldown
         }
@@ -94,6 +94,7 @@ class Player {
         this.drawPlayer();
         this.drawHealthBar(); // Dessiner la barre de santé
         this.drawCooldownBar(); // Dessiner la barre de cooldown
+        this.drawLevelAndXp(); // Dessiner le niveau et la barre d'XP circulaire
     }
 
     drawPlayer() {
@@ -131,7 +132,7 @@ class Player {
             this.damage *= m;
             this.defense *= m;
             this.speed *= m;
-            this.attackSpeed *= m;
+            this.attackCoolDown = Math.max(this.attackCoolDown / m, 1); // Réduire le cooldown d'attaque
         }
     }
 
@@ -184,5 +185,40 @@ class Player {
 
         // Restaurer l'état précédent du système de coordonnées
         pop();
+    }
+
+    drawLevelAndXp() {
+        // Sauvegarder l'état actuel du système de coordonnées
+        push();
+        // Réinitialiser la transformation pour dessiner en coordonnées absolues de l'écran
+        resetMatrix();
+
+        // Position et dimensions de la barre d'XP circulaire
+        let centerX = width - 60;
+        let centerY = 60;
+        let radius = 50;
+        let xpRatio = this.xp / this.maxXp;
+
+        // Dessiner le fond de la barre d'XP circulaire
+        fill(200);
+        ellipse(centerX, centerY, radius * 2);
+
+        // Dessiner la barre d'XP circulaire
+        fill(0, 0, 255);
+        arc(centerX, centerY, radius * 2, radius * 2, -HALF_PI, -HALF_PI + TWO_PI * xpRatio);
+
+        // Dessiner le niveau du joueur au centre de la barre d'XP
+        fill(0);
+        textAlign(CENTER, CENTER);
+        textSize(20);
+        text(this.level, centerX, centerY);
+
+        // Restaurer l'état précédent du système de coordonnées
+        pop();
+    }
+
+    gainXp(amount) {
+        this.xp += amount;
+        this.checkLevelUp();
     }
 }

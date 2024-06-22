@@ -18,6 +18,7 @@ class Monster {
         this.skin = null;
         this.checkLevelUp(player);
         this.dead = false;
+        this.player = player; // Ajout de la référence du joueur pour ajouter de l'XP
     }
 
     update() {
@@ -49,14 +50,15 @@ class Monster {
             this.update();
             this.checkDeath();
             this.drawMonster();
-            this.attackPlayer(player);
+            this.attackPlayer(this.player);
         }
     }
 
     checkDeath() {
-        if (this.health <= 0) {
+        if (this.health <= 0 && !this.dead) {
             this.health = 0;
             this.dead = true;
+            this.player.gainXp(5); // Ajouter 5 XP au joueur
         }
     }
 

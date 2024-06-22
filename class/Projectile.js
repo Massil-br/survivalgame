@@ -2,6 +2,8 @@ class Projectile {
     constructor(x, y, angle, speed, range) {
         this.x = x;
         this.y = y;
+        this.startX = x; // Position de départ
+        this.startY = y; // Position de départ
         this.angle = angle;
         this.speed = speed;
         this.range = range;
@@ -13,7 +15,7 @@ class Projectile {
     update() {
         this.x += Math.cos(this.angle) * this.speed;
         this.y += Math.sin(this.angle) * this.speed;
-        this.distanceTraveled += this.speed;
+        this.distanceTraveled = dist(this.startX, this.startY, this.x, this.y);
 
         if (this.distanceTraveled >= this.range) {
             this.active = false;

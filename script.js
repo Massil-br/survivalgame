@@ -16,10 +16,10 @@ function setup() {
     frameRate(60);
     noStroke();
     background(0, 0, 0);
-    noiseDetail(5, 0.5);
+    noiseDetail(10, 0.5);
     makeMap();
     drawMap();
-    spawnMonsters(500);
+    spawnMonsters(100);
     setMapSize(600, 600);
    
 }
@@ -75,7 +75,7 @@ function draw() {
             if (!monster.dead && projectile.active && dist(projectile.x, projectile.y, monster.x, monster.y) < tileSize / 2) {
                 monster.health -= player.damage;
                 projectile.active = false; // Désactiver le projectile après avoir touché un monstre
-                monster.checkDeath(); // Vérifier si le monstre est mort
+                monster.checkDeath(); // Vérifier si le monstre est mort et ajouter de l'XP
             }
         });
     });
