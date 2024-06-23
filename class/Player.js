@@ -19,6 +19,7 @@ class Player {
         this.moveY = 0;
         this.lastDirection = "right"; // Direction initiale par défaut
         this.projectiles = [];
+        this.xpMultiplier = 5;
     }
 
     update(){
@@ -122,14 +123,15 @@ class Player {
 
     checkLevelUp() {
         if (this.xp >= this.maxXp) {
-            let m = 1.5;
+            let multiplier = 1.5;
             this.level++;
             this.xp -= this.maxXp;
-            this.maxXp *= m;
-            this.maxHealth *= m;
+            this.maxXp *= multiplier;
+            this.maxHealth *= multiplier;
             this.health = this.maxHealth;
-            this.damage *= m;
-            this.speed += m*0.2;
+            this.damage *= multiplier;
+            this.speed += multiplier*0.2;
+            this.xpMultiplier *= multiplier*0.8;
             if (this.level >= 10) {
                 this.attackCoolDown = 2*60;
             }

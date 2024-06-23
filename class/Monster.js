@@ -2,6 +2,8 @@ class Monster {
     randomPosition(center) {
         return Math.random(0,mapHeight) ;
     }
+    
+    
 
     constructor(player) {
         this.x = this.randomPosition(player.x);
@@ -58,7 +60,7 @@ class Monster {
         if (this.health <= 0 && !this.dead) {
             this.health = 0;
             this.dead = true;
-            this.player.gainXp(500000); // Ajouter 5 XP au joueur
+            this.player.gainXp(this.player.xpMultiplier); // Ajouter 5 XP au joueur
         }
     }
 
