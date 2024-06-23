@@ -19,7 +19,7 @@ function setup() {
     noiseDetail(10, 0.5);
     makeMap();
     drawMap();
-    spawnMonsters(100);
+    spawnMonsters(1000);
     setMapSize(600, 600);
    
 }

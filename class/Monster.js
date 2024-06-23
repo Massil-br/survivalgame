@@ -58,7 +58,7 @@ class Monster {
         if (this.health <= 0 && !this.dead) {
             this.health = 0;
             this.dead = true;
-            this.player.gainXp(5); // Ajouter 5 XP au joueur
+            this.player.gainXp(500000); // Ajouter 5 XP au joueur
         }
     }
 

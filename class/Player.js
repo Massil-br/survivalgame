@@ -2,7 +2,7 @@ class Player {
     constructor() {
         this.x = mapWidth/2;
         this.y = mapHeight/2 ;
-        this.speed = 10; // Vitesse de déplacement
+        this.speed = 5; // Vitesse de déplacement
         this.skin = null;
         this.maxHealth = 20;
         this.health = this.maxHealth;
@@ -13,7 +13,6 @@ class Player {
         this.attackRange = 5*tileSize;
         this.attackCoolDown = 3*60; // Cooldown en frames (3 secondes à 60 FPS)
         this.cooldown = 0; // Initialement, pas de cooldown
-        this.defense = 1;
         this.dead = false;
         this.deadSkin = null;
         this.moveX = 0;
@@ -41,8 +40,8 @@ class Player {
     shootProjectile(targetX, targetY) {
         if (!this.dead && this.cooldown === 0) {
             let angle = Math.atan2(targetY - this.y, targetX - this.x);
-            let speed = 10; // Vitesse de la flèche
-            let projectile = new Projectile(this.x, this.y, angle, (speed*0.7), this.attackRange);
+            let speed = 5; // Ajuster la vitesse de la flèche ici
+            let projectile = new Projectile(this.x, this.y, angle, speed, this.attackRange);
             this.projectiles.push(projectile);
             this.cooldown = this.attackCoolDown; // Réinitialiser le cooldown
         }
@@ -130,9 +129,17 @@ class Player {
             this.maxHealth *= m;
             this.health = this.maxHealth;
             this.damage *= m;
-            this.defense *= m;
-            this.speed *= m;
-            this.attackCoolDown = Math.max(this.attackCoolDown / m, 1); // Réduire le cooldown d'attaque
+            this.speed += m*0.2;
+            if (this.level >= 10) {
+                this.attackCoolDown = 2*60;
+            }
+            if (this.level >= 20) {
+                this.attackCoolDown = 1*60;
+            }
+            if (this.level >= 30) {
+                this.attackCoolDown = 0.5*60;
+            }
+
         }
     }
 
