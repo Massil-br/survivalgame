@@ -1,4 +1,5 @@
 let monsters = [];
+let spawnCooldDown = 0;
 
 function preload() {
 
@@ -18,7 +19,7 @@ function setup() {
     background(0, 0, 0);
     noiseDetail(5, 0.5);
     setMapSize(600, 600);
-    spawnMonsters(500);
+    spawnMonsters(20);
 }
 
 function setMapSize(newWidth, newHeight) {
@@ -82,8 +83,12 @@ function draw() {
 
     // Supprimer les monstres morts
     monsters = monsters.filter(monster => !monster.dead);
-    if (monsters.length < 250) {
-        spawnMonsters(250);
+   
+    if (monsters.length < 500 && spawnCooldDown == 0 && !player.dead) {
+        spawnMonsters(100);
+        spawnCooldDown = 5*60;
+    }else {
+        spawnCooldDown--;
     }
 }
 
@@ -96,6 +101,7 @@ function spawnMonsters(numMonsters) {
         newMonster.x = randomX;
         newMonster.y = randomY;
         monsters.push(newMonster);
+        console.log(`Un monstre a été créé. Nombre total de monstres: ${monsters.length}`);
     }
 }
 

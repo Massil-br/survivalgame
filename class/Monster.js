@@ -1,17 +1,23 @@
 class Monster {
     randomPosition(center) {
-        return Math.random(0,mapHeight) ;
+        let distance = 5 * tileSize + Math.random() * (25 * tileSize); // Distance entre 5 et 30 tuiles
+        let angle = Math.random() * 2 * Math.PI; // Angle aléatoire
+        return {
+            x: center.x + distance * Math.cos(angle),
+            y: center.y + distance * Math.sin(angle)
+        };
     }
     
     
 
     constructor(player) {
-        this.x = this.randomPosition(player.x);
-        this.y = this.randomPosition(player.y);
+        let position = this.randomPosition({ x: player.x, y: player.y });
+        this.x = position.x;
+        this.y = position.y;
         this.level = 1;
         this.maxHealth = 3;
         this.health = this.maxHealth;
-        this.damage = 10;
+        this.damage = 2;
         this.defense = 1;
         this.speed = 20;
         this.attackRange = 2 * tileSize;
