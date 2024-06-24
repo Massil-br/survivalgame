@@ -16,12 +16,9 @@ function setup() {
     frameRate(60);
     noStroke();
     background(0, 0, 0);
-    noiseDetail(10, 0.5);
-    makeMap();
-    drawMap();
-    spawnMonsters(1000);
+    noiseDetail(5, 0.5);
     setMapSize(600, 600);
-   
+    spawnMonsters(1000);
 }
 
 function setMapSize(newWidth, newHeight) {

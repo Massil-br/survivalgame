@@ -9,7 +9,7 @@ class Player {
         this.maxXp = 20;
         this.xp = 0;
         this.level = 1;
-        this.damage = 10;
+        this.damage = 4;
         this.attackRange = 5*tileSize;
         this.attackCoolDown = 3*60; // Cooldown en frames (3 secondes à 60 FPS)
         this.cooldown = 0; // Initialement, pas de cooldown
