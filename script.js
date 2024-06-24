@@ -18,7 +18,7 @@ function setup() {
     background(0, 0, 0);
     noiseDetail(5, 0.5);
     setMapSize(600, 600);
-    spawnMonsters(1000);
+    spawnMonsters(500);
 }
 
 function setMapSize(newWidth, newHeight) {
@@ -82,6 +82,9 @@ function draw() {
 
     // Supprimer les monstres morts
     monsters = monsters.filter(monster => !monster.dead);
+    if (monsters.length < 250) {
+        spawnMonsters(250);
+    }
 }
 
 function spawnMonsters(numMonsters) {
