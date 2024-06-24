@@ -18,10 +18,10 @@ class Monster {
         this.attackCoolDown = 5 * 60; // 10 secondes * 60 FPS = 600 frames
         this.cooldown = 0; // Cooldown initialisé à 0
         this.skin = null;
-        this.checkLevelUp(player);
         this.dead = false;
         this.player = player; // Ajout de la référence du joueur pour ajouter de l'XP
         this.moveCooldown = 1;
+        this.checkLevelUp(player);
     }
 
     update() {
@@ -66,9 +66,14 @@ class Monster {
         this.maxHealth = this.maxHealth * (multiplier * this.level);
         this.health = this.maxHealth * (multiplier * this.level);
         this.damage = this.damage * (multiplier * this.level);
-        this.defense = this.defense * (multiplier * this.level);
-        this.speed = this.speed * (multiplier * this.level);
-        this.attackCoolDown = this.attackCoolDown - (multiplier * this.level);
+        this.speed = this.speed + (multiplier * this.level);
+        if (this.level > 30) {
+            this.attackCoolDown = 2*60;
+        }else if (this.level > 20) {
+            this.attackCoolDown = 3*60;
+        }else if (this.level > 10) {
+            this.attackCoolDown = 4*60;
+        }
     }
 
     Play() {

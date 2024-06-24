@@ -132,16 +132,13 @@ class Player {
             this.damage *= multiplier;
             this.speed += multiplier*0.2;
             this.xpMultiplier *= multiplier*0.8;
-            if (this.level >= 10) {
-                this.attackCoolDown = 2*60;
-            }
-            if (this.level >= 20) {
-                this.attackCoolDown = 1*60;
-            }
-            if (this.level >= 30) {
-                this.attackCoolDown = 0.5*60;
-            }
-
+          if (this.level > 30) {
+            this.attackCoolDown = 0.5*60;
+          }else if (this.level > 20) {
+            this.attackCoolDown = 1*60;
+          }else if (this.level > 10) {
+            this.attackCoolDown = 2*60;
+          }
         }
     }
 
