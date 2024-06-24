@@ -13,7 +13,7 @@ class Monster {
         this.health = this.maxHealth;
         this.damage = 10;
         this.defense = 1;
-        this.speed = 0.5;
+        this.speed = 20;
         this.attackRange = 2 * tileSize;
         this.attackCoolDown = 5 * 60; // 10 secondes * 60 FPS = 600 frames
         this.cooldown = 0; // Cooldown initialisé à 0
@@ -21,12 +21,36 @@ class Monster {
         this.checkLevelUp(player);
         this.dead = false;
         this.player = player; // Ajout de la référence du joueur pour ajouter de l'XP
+        this.moveCooldown = 1;
     }
 
     update() {
         if (this.cooldown > 0) {
             this.cooldown--; // Décrémenter le cooldown à chaque frame
         }
+            this.moveRandomly();
+    }
+
+    moveRandomly() {
+        if (this.moveCooldown > 0) {
+            this.moveCooldown--;
+        } else {
+            let distanceToPlayer = dist(this.x, this.y, this.player.x, this.player.y);
+            if (distanceToPlayer < 5 * tileSize) {
+                // Se rapprocher du joueur
+                let angle = Math.atan2(this.player.y - this.y, this.player.x - this.x);
+                this.x += Math.cos(angle) * this.speed;
+                this.y += Math.sin(angle) * this.speed;
+            } else {
+                // Mouvement aléatoire
+                this.x += (Math.random() - 0.5) * this.speed * 2;
+                this.y += (Math.random() - 0.5) * this.speed * 2;
+            }
+            this.moveCooldown = 30; // Réinitialiser le cooldown
+        }
+    }
+    dist(x1, y1, x2, y2) {
+        return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
     }
 
     attackPlayer(player) {
