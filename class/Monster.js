@@ -117,7 +117,7 @@ class Monster {
 
             // Coordonnées du sprite à découper dans le spritesheet
             let sx = col * spriteWidth;
-            let sy = row * spriteHeight;
+            let sy = row * spriteHeight+1;
 
             // Coordonnées où le sprite doit être dessiné sur le canevas
             let dx = this.x - tileSize / 2;
