@@ -100,18 +100,18 @@ class Monster {
     }
 
     preload() {
-        this.skin = loadImage("Assets/slime_monster_spritesheet.png");
+        this.skin = loadImage("Assets/slime.jiggle.png");
     }
 
     drawMonster() {
         if (this.skin && !this.dead) {
-            let spriteWidth = 24; // Largeur originale du sprite dans le spritesheet
-            let spriteHeight = 24; // Hauteur originale du sprite dans le spritesheet
-            let cols = 3; // Nombre de colonnes dans le spritesheet
+            let spriteWidth = 64; // Largeur originale du sprite dans le spritesheet
+            let spriteHeight = 64; // Hauteur originale du sprite dans le spritesheet
+            let cols = 8; // Nombre de colonnes dans le spritesheet
             let rows = 3; // Nombre de lignes dans le spritesheet
 
-            // Calculer la position de la 7ème image
-            let frameIndex = 6; // 7ème image, indexation à partir de 0
+           
+            let frameIndex = 17; 
             let col = frameIndex % cols;
             let row = Math.floor(frameIndex / cols);
 
