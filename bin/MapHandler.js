@@ -49,7 +49,7 @@ function pickColor(i, j)
   {
     if(random() > pow(h-0.3, 2)*100)
     {
-      c = shore;
+      c = volcanoStone;
     }
     else
     {
