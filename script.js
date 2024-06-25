@@ -85,7 +85,7 @@ function draw() {
     monsters = monsters.filter(monster => !monster.dead);
    
     if (monsters.length < 500 && spawnCooldDown == 0 && !player.dead) {
-        spawnMonsters(100);
+        spawnMonsters(5);
         spawnCooldDown = 5*60;
     }else {
         spawnCooldDown--;

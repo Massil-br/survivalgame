@@ -1,7 +1,7 @@
 let map = null;
 let noiseScale = 1/50;
-let ocean = "#008dc4";
-let shore = "#00a9cc";
+let volcano= "#f25500";
+let volcanoStone = "#6e1d1b";
 let sand = "#eecda3";
 let grass = "#7ec850";
 let stone = "#676767";
@@ -32,17 +32,17 @@ function pickColor(i, j)
   
   if(h < 0.2)
   {
-    c = ocean;
+    c = volcano;
   } 
   else if(h < 0.3)
   {
     if(random() > pow(h-0.2, 2)*100)
     {
-      c = ocean;
+      c = volcano;
     }
     else
     {
-      c = shore;
+      c = volcanoStone;
     }
   }
   else if(h < 0.4)
