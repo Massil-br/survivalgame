@@ -2,30 +2,67 @@ class Boss extends Monster {
     constructor(player) {
         super(player);
         this.size = 5 * tileSize; // Taille du boss
-        this.skin = '/Assets/Monster_rot.png'; // Chemin du skin du boss
+        this.maxHealth = 1000; // Santé maximale très élevée
+        this.health = this.maxHealth;
+        this.damage = 50; // Dégâts très élevés
+        this.defense = 20; // Défense très élevée
+        this.speed = 10; // Vitesse réduite pour un boss géant
+        this.attackRange = 3 * tileSize; // Portée d'attaque augmentée
+        this.attackCoolDown = 2 * 60; // Cooldown d'attaque réduit
+        this.arrows = []; // Liste des flèches tirées par le boss
+        this.skin = loadImage('/Assets/Monster_rot.png', () => {
+            console.log("Image du boss chargée");
+        }, () => {
+            console.error("Erreur de chargement de l'image du boss");
+        });
     }
 
-    attack() {
-        let numArrows = 8;
-        let angleStep = (2 * Math.PI) / numArrows;
-        for (let i = 0; i < numArrows; i++) {
-            let angle = i * angleStep;
-            let arrowX = this.x + Math.cos(angle) * 6 * tileSize;
-            let arrowY = this.y + Math.sin(angle) * 6 * tileSize;
-            this.shootArrow(arrowX, arrowY, angle);
+    // Méthode pour dessiner le boss
+    drawBoss() {
+        if (this.skin && !this.dead) {
+            let spriteWidth = this.skin.width; // Largeur originale du sprite
+            let spriteHeight = this.skin.height; // Hauteur originale du sprite
+
+            // Coordonnées où le sprite doit être dessiné sur le canevas
+            let dx = this.x - this.size / 2;
+            let dy = this.y - this.size / 2;
+
+            // Dessiner le sprite redimensionné à la taille du boss
+            image(this.skin, dx, dy, this.size, this.size);
         }
     }
 
-    shootArrow(x, y, angle) {
-        // Implémentez la logique pour tirer une flèche
-        console.log(`Flèche tirée à (${x}, ${y}) avec un angle de ${angle}`);
+    // Méthode pour tirer des flèches
+    shootArrow(targetX, targetY) {
+        let angle = Math.atan2(targetY - this.y, targetX - this.x);
+        let speed = 5; // Ajuster la vitesse de la flèche ici
+        let range = 10 * tileSize; // Ajuster la portée de la flèche ici
+        let arrow = new Arrow(this.x, this.y, angle, speed, range);
+        this.arrows.push(arrow);
     }
 
-    moveRandomly() {
-        super.moveRandomly();
-        // Ajoutez une condition pour que le boss attaque périodiquement
-        if (Math.random() < 0.01) { // Par exemple, 1% de chance d'attaquer à chaque frame
-            this.attack();
+    // Surcharge de la méthode Play pour inclure le dessin du boss et des flèches
+    Play() {
+        if (!this.dead) {
+            this.update();
+            this.checkDeath();
+            this.drawBoss();
+
+            // Mettre à jour et dessiner les flèches
+            this.arrows.forEach(arrow => {
+                arrow.update();
+                arrow.draw();
+            });
+
+            // Supprimer les flèches inactives
+            this.arrows = this.arrows.filter(arrow => arrow.active);
+
+            // Tirer des flèches périodiquement
+            if (frameCount % 120 === 0) { // Par exemple, tirer une flèche toutes les 120 frames
+                this.shootArrow(player.x, player.y);
+            }
+
+            this.attackPlayer(this.player);
         }
     }
 }

@@ -4,6 +4,9 @@ let showMenu = true;
 let gameOver = false;
 let gameOverCooldown = 0;
 let gameOverImage;
+let currentLoop = null;
+let bossTp = false;
+let inBossMap = false;
 
 function preload() {
 
@@ -59,8 +62,16 @@ function setup() {
     noStroke();
     background(0, 0, 0);
     noiseDetail(5, 0.5);
-    setMapSize(600, 600);
-    spawnMonsters(500);
+
+    // Assurez-vous que le fichier Boss.js est inclus dans votre projet HTML
+    // <script src="class/Boss.js"></script>
+
+    if (window.currentLoop === bossLoop) {
+        makeBossMap();
+    } else {
+        setMapSize(600, 600);
+        spawnMonsters(500);
+    }
 }
 
 function setMapSize(newWidth, newHeight) {
@@ -92,10 +103,15 @@ function draw() {
             drawGameOver();
         }
     } else {
-        gameLoop();
+        if (window.currentLoop) {
+            window.currentLoop();
+        } else {
+            gameLoop();
+        }
+
         if (player.dead) {
             gameOver = true;
-            gameOverCooldown = 3*60; // 3 fois 60 frames de cooldown (3 seconde à 60 FPS)
+            gameOverCooldown = 3 * 60; // 3 fois 60 frames de cooldown (3 secondes à 60 FPS)
         }
     }
 }
@@ -141,4 +157,38 @@ function resetGame() {
     monsters = [];
     spawnCooldDown = 0;
     player.reset();
+}
+
+function teleportToBossMap() {
+    console.log("Téléportation vers la carte du boss");
+    // Réinitialiser la carte du boss
+    makeBossMap();
+
+    // Créer le boss et le positionner au centre de la carte du boss
+    window.boss = new Boss(player);
+    window.boss.x = 50 * tileSize / 2;
+    window.boss.y = 50 * tileSize / 2;
+
+    // Positionner le joueur aléatoirement sur la carte du boss, loin du boss
+    let playerX, playerY;
+    do {
+        playerX = Math.random() * 100 * tileSize;
+        playerY = Math.random() * 100 * tileSize;
+    } while (dist(playerX, playerY, window.boss.x, window.boss.y) < 10 * tileSize);
+
+    player.x = playerX;
+    player.y = playerY;
+
+    // Changer la boucle de jeu active
+    window.currentLoop = bossLoop;
+    inBossMap = true;
+    console.log("Boucle de jeu active : bossLoop");
+}
+
+function keyPressed() {
+    if ((key === 'm' || key === 'M') && !bossTp) {
+        teleportToBossMap();
+        bossTp = true;
+    }
+    
 }

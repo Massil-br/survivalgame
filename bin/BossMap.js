@@ -1,7 +1,11 @@
+
+let drawlog = true;
+
+
 function makeBossMap()
 {
-    let numTilesWide = 100 / tileSize;
-    let numTilesHigh = 100 / tileSize;
+    let numTilesWide = 100;
+    let numTilesHigh = 100;
 
     map = [];
     for (let i = 0; i < numTilesWide; i++) {
@@ -14,15 +18,30 @@ function makeBossMap()
 }
 
 function pickColorBoss(noiseValue)
-
 {
     if (noiseValue < 0.3) {
-        return volcanoStone; // Exemple de couleur pour une valeur de bruit basse
+        return color(volcanoStone); // Exemple de couleur pour une valeur de bruit basse
     } else if (noiseValue < 0.6) {
-        return volcano; // Exemple de couleur pour une valeur de bruit moyenne
+        return color(volcano); // Exemple de couleur pour une valeur de bruit moyenne
     } else {
-        return stone; // Exemple de couleur pour une valeur de bruit haute
+        return color(stone); // Exemple de couleur pour une valeur de bruit haute
     }
 }
 
-// Assurez-vous d'inclure p5.js dans votre projet pour utiliser la fonction noise
+function drawBossMap(startX, startY, w, h) {
+    if (drawlog) {
+        console.log("Dessin de la carte du boss");
+        drawlog = false;
+    }
+    let startXIndex = Math.max(0, Math.floor(startX / tileSize));
+    let startYIndex = Math.max(0, Math.floor(startY / tileSize));
+    let endXIndex = Math.min(100, startXIndex + Math.ceil(1 + w / tileSize));
+    let endYIndex = Math.min(100, startYIndex + Math.ceil(1 + h / tileSize));
+
+    for (let i = startXIndex; i < endXIndex; i++) {
+        for (let j = startYIndex; j < endYIndex; j++) {
+            fill(map[i][j]);
+            rect(i * tileSize, j * tileSize, tileSize, tileSize);
+        }
+    }
+}

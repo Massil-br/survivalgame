@@ -55,10 +55,26 @@ class Player {
     }
 
     preload() {
-        this.skin = loadImage("./Assets/Player/GIF_/player_idle.gif"); 
-        this.deadSkin = loadImage("./Assets/Player/PNG_/07-Dead/Dead10.png")
-        this.runinverted = loadImage("./Assets/Player/GIF_/player_run.gif");
-        this.run = loadImage("./Assets/Player/GIF_/inverted_player_run.gif");
+        this.skin = loadImage("./Assets/Player/GIF_/player_idle.gif", () => {
+            console.log("Image du joueur chargée");
+        }, () => {
+            console.error("Erreur de chargement de l'image du joueur");
+        });
+        this.deadSkin = loadImage("./Assets/Player/PNG_/07-Dead/Dead10.png", () => {
+            console.log("Image de mort du joueur chargée");
+        }, () => {
+            console.error("Erreur de chargement de l'image de mort du joueur");
+        });
+        this.runinverted = loadImage("./Assets/Player/GIF_/player_run.gif", () => {
+            console.log("Image de course inversée du joueur chargée");
+        }, () => {
+            console.error("Erreur de chargement de l'image de course inversée du joueur");
+        });
+        this.run = loadImage("./Assets/Player/GIF_/inverted_player_run.gif", () => {
+            console.log("Image de course du joueur chargée");
+        }, () => {
+            console.error("Erreur de chargement de l'image de course du joueur");
+        });
     }
 
     handleInput() {
@@ -87,9 +103,18 @@ class Player {
             this.moveY *= Math.sqrt(2) / 2;
         }
     
-        this.x = constrain(this.x + this.moveX, 0, mapWidth);
-        this.y = constrain(this.y + this.moveY, 0, mapHeight);
+        if (inBossMap) {
+            // Restreindre le mouvement du joueur à l'intérieur de la bossmap
+            let bossMapWidth = 100 * tileSize;
+            let bossMapHeight = 100 * tileSize;
+            this.x = constrain(this.x + this.moveX, 0, bossMapWidth);
+            this.y = constrain(this.y + this.moveY, 0, bossMapHeight);
+        } else {
+            // Permettre le mouvement sur toute la carte de base
+            this.x += this.moveX;
+            this.y += this.moveY;
         }
+    }
 
 
     play() {
@@ -149,9 +174,11 @@ class Player {
     }
 
     checkDeath() {
-        if (this.health <= 0) {
+        if (this.health <= 0 && !this.dead) {
             this.health = 0;
             this.dead = true;
+            console.log("Le joueur est mort");
+            // Ajouter la logique pour gérer la mort du joueur
         }
     }
 
