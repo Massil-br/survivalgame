@@ -3,6 +3,7 @@ let spawnCooldDown = 0;
 let showMenu = true;
 let gameOver = false;
 let gameOverCooldown = 0;
+let gameOverImage;
 
 function preload() {
 
@@ -13,6 +14,9 @@ function preload() {
     monsters.forEach(monster => {
         monster.preload();
     });
+
+    // Charger l'image de game over
+    gameOverImage = loadImage('Assets/Player/PNG_/07-Dead/PS_BALD GUY_Dead_008.png');
 }
 
 function drawMenu(){
@@ -30,13 +34,23 @@ function drawMenu(){
 function drawGameOver(){
     background(0, 0, 0);
     fill(255);
-    textSize(20);
+    textSize(50);
     textAlign(CENTER, CENTER);
 
-    text("Game Over", width / 2, height / 2 - 60);
-    text("Jouer", width / 2, height / 2);
-    text("Commandes", width / 2, height / 2 + 40);
-    text("Règles", width / 2, height / 2 + 80);
+    text("Game Over", width / 2, height / 2 - 150);
+
+    // Calculer la position y pour centrer l'image entre "Game Over" et "Jouer"
+    let imageY = (height / 2 - 150 + height / 2 + 50) / 2 - 100; // 100 est la moitié de la hauteur de l'image
+
+    // Afficher l'image de game over
+    if (gameOverImage) {
+        image(gameOverImage, (width / 2 - gameOverImage.width / 2)+190, imageY-40, 200, 200);
+    }
+
+    textSize(20);
+    text("Jouer", width / 2, height / 2 + 50);
+    text("Commandes", width / 2, height / 2 + 90);
+    text("Règles", width / 2, height / 2 + 130);
 }
 
 function setup() {
@@ -46,7 +60,7 @@ function setup() {
     background(0, 0, 0);
     noiseDetail(5, 0.5);
     setMapSize(600, 600);
-    spawnMonsters(20);
+    spawnMonsters(500);
 }
 
 function setMapSize(newWidth, newHeight) {
@@ -81,7 +95,7 @@ function draw() {
         gameLoop();
         if (player.dead) {
             gameOver = true;
-            gameOverCooldown = 3*60; // Par exemple, 3 fois 60 frames de cooldown (3 seconde à 60 FPS)
+            gameOverCooldown = 3*60; // 3 fois 60 frames de cooldown (3 seconde à 60 FPS)
         }
     }
 }
@@ -126,5 +140,5 @@ function resetGame() {
     // Réinitialiser les variables de jeu
     monsters = [];
     spawnCooldDown = 0;
-    player.reset(); // Assurez-vous que la méthode reset() existe dans la classe Player pour réinitialiser l'état du joueur
+    player.reset();
 }
