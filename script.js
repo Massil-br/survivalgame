@@ -1,5 +1,8 @@
 let monsters = [];
 let spawnCooldDown = 0;
+let showMenu = true;
+let gameOver = false;
+let gameOverCooldown = 0;
 
 function preload() {
 
@@ -10,6 +13,30 @@ function preload() {
     monsters.forEach(monster => {
         monster.preload();
     });
+}
+
+function drawMenu(){
+    background(0, 0, 0);
+    fill(255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+
+    text("Menu", width / 2, height / 2 - 60);
+    text("Jouer", width / 2, height / 2);
+    text("Commandes", width / 2, height / 2 + 40);
+    text("Règles", width / 2, height / 2 + 80);
+}
+
+function drawGameOver(){
+    background(0, 0, 0);
+    fill(255);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+
+    text("Game Over", width / 2, height / 2 - 60);
+    text("Jouer", width / 2, height / 2);
+    text("Commandes", width / 2, height / 2 + 40);
+    text("Règles", width / 2, height / 2 + 80);
 }
 
 function setup() {
@@ -42,7 +69,21 @@ function updateEntitiesPositions() {
 }
 
 function draw() {
-    gameLoop();
+    if (showMenu) {
+        drawMenu();
+    } else if (gameOver) {
+        if (gameOverCooldown > 0) {
+            gameOverCooldown--;
+        } else {
+            drawGameOver();
+        }
+    } else {
+        gameLoop();
+        if (player.dead) {
+            gameOver = true;
+            gameOverCooldown = 3*60; // Par exemple, 3 fois 60 frames de cooldown (3 seconde à 60 FPS)
+        }
+    }
 }
 
 function spawnMonsters(numMonsters) {
@@ -58,15 +99,32 @@ function spawnMonsters(numMonsters) {
     }
 }
 
-  
 function mousePressed() {
-    // Calculer la translation pour centrer le joueur
-    let translateX = width / 2 - player.x;
-    let translateY = height / 2 - player.y;
+    if (showMenu) {
+        showMenu = false; // Fermer le menu et commencer le jeu
+        setup(); // Initialiser le jeu
+    } else if (gameOver && gameOverCooldown === 0) {
+        // Réinitialiser le jeu
+        resetGame();
+        gameOver = false;
+        showMenu = false;
+        setup(); // Réinitialiser le jeu
+    } else {
+        // Calculer la translation pour centrer le joueur
+        let translateX = width / 2 - player.x;
+        let translateY = height / 2 - player.y;
 
-    // Ajuster les coordonnées de la souris en fonction de la translation
-    let adjustedMouseX = mouseX - translateX;
-    let adjustedMouseY = mouseY - translateY;
+        // Ajuster les coordonnées de la souris en fonction de la translation
+        let adjustedMouseX = mouseX - translateX;
+        let adjustedMouseY = mouseY - translateY;
 
-    player.shootProjectile(adjustedMouseX, adjustedMouseY);
+        player.shootProjectile(adjustedMouseX, adjustedMouseY);
+    }
+}
+
+function resetGame() {
+    // Réinitialiser les variables de jeu
+    monsters = [];
+    spawnCooldDown = 0;
+    player.reset(); // Assurez-vous que la méthode reset() existe dans la classe Player pour réinitialiser l'état du joueur
 }
