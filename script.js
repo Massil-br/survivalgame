@@ -8,6 +8,9 @@ let currentLoop = null;
 let bossTp = false;
 let inBossMap = false;
 let victory = false;
+let menuBackground;
+let gameOverBackground;
+let victoryBackground;
 
 function preload() {
 
@@ -16,11 +19,16 @@ function preload() {
 
     // Charger l'image de game over
     gameOverImage = loadImage('Assets/Player/PNG_/07-Dead/PS_BALD GUY_Dead_008.png');
+    menuBackground = loadImage("Assets/Player/PNG_/Menu.jpg");
+    gameOverBackground = loadImage("Assets/Player/PNG_/gameover.jpg");
+    victoryBackground = loadImage("Assets/Player/PNG_/victory.jpg");
 }
 
 function drawMenu(){
-    background(0, 0, 0);
-    fill(255);
+    background(menuBackground);
+    fill(0, 255, 255);
+    stroke(0);
+    strokeWeight(2);
     textSize(50);
     textAlign(CENTER, CENTER);
 
@@ -33,15 +41,16 @@ function drawMenu(){
 }
 
 function drawGameOver(){
-    background(0, 0, 0);
-    fill(255);
+    background(gameOverBackground);
+    fill(0, 255, 255);
+    stroke(0);
+    strokeWeight(2);
     textSize(50);
     textAlign(CENTER, CENTER);
 
     text("Game Over", width / 2, height / 2 - 150);
 
-    // Calculer la position y pour centrer l'image entre "Game Over" et "Jouer"
-    let imageY = (height / 2 - 150 + height / 2 + 50) / 2 - 100; // 100 est la moitié de la hauteur de l'image
+    let imageY = (height / 2 - 150 + height / 2 + 50) / 2 - 100;
 
     // Afficher l'image de game over
     if (gameOverImage) {
@@ -55,8 +64,10 @@ function drawGameOver(){
 }
 
 function drawVictory() {
-    background(0, 0, 0);
-    fill(255);
+    background(victoryBackground);
+    fill(0, 255, 255);
+    stroke(0);
+    strokeWeight(2);
     textSize(50);
     textAlign(CENTER, CENTER);
 
@@ -71,9 +82,6 @@ function setup() {
     noStroke();
     background(0, 0, 0);
     noiseDetail(5, 0.5);
-
-    // Assurez-vous que le fichier Boss.js est inclus dans votre projet HTML
-    // <script src="class/Boss.js"></script>
 
     if (window.currentLoop === bossLoop) {
         makeBossMap();
