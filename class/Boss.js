@@ -10,7 +10,7 @@ class Boss extends Monster {
         this.attackRange = 3 * tileSize; // Portée d'attaque augmentée
         this.attackCoolDown = 2 * 60; // Cooldown d'attaque réduit
         this.arrows = []; // Liste des flèches tirées par le boss
-        this.skin = loadImage('/Assets/Monster_rot.png', () => {
+        this.skin = loadImage('./Assets/Monster_rot.png', () => {
             console.log("Image du boss chargée");
         }, () => {
             console.error("Erreur de chargement de l'image du boss");
@@ -30,6 +30,17 @@ class Boss extends Monster {
             // Dessiner le sprite redimensionné à la taille du boss
             image(this.skin, dx, dy, this.size, this.size);
         }
+    }
+
+    // Méthode pour vérifier les collisions avec un projectile
+    checkCollisionWithProjectile(projectile) {
+        let halfSize = this.size / 2;
+        return (
+            projectile.x > this.x - halfSize &&
+            projectile.x < this.x + halfSize &&
+            projectile.y > this.y - halfSize &&
+            projectile.y < this.y + halfSize
+        );
     }
 
     // Méthode pour tirer des flèches

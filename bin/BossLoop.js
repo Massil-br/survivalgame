@@ -18,6 +18,13 @@ function bossLoop() {
         window.boss.Play();
     }
 
+    // Mettre à jour et dessiner les archers
+    if (window.archers) {
+        window.archers.forEach(archer => {
+            archer.Play();
+        });
+    }
+
     // Mettre à jour et dessiner les projectiles du joueur
     player.projectiles.forEach(projectile => {
         projectile.update();
@@ -26,7 +33,7 @@ function bossLoop() {
 
     // Gérer les collisions entre projectiles du joueur et le boss
     player.projectiles.forEach(projectile => {
-        if (window.boss && !window.boss.dead && projectile.active && dist(projectile.x, projectile.y, window.boss.x, window.boss.y) < tileSize / 2) {
+        if (window.boss && !window.boss.dead && projectile.active && window.boss.checkCollisionWithProjectile(projectile)) {
             window.boss.health -= player.damage;
             projectile.active = false; // Désactiver le projectile après avoir touché le boss
             window.boss.checkDeath(); // Vérifier si le boss est mort
@@ -46,6 +53,26 @@ function bossLoop() {
                 arrow.active = false; // Désactiver la flèche après avoir touché le joueur
                 player.checkDeath(); // Vérifier si le joueur est mort
             }
+        });
+    }
+
+    // Gérer les collisions entre les flèches des archers et le boss
+    if (window.archers) {
+        window.archers.forEach(archer => {
+            archer.arrows.forEach(arrow => {
+                if (arrow.active && window.boss.checkCollisionWithProjectile(arrow)) {
+                    window.boss.health -= archer.damage;
+                    arrow.active = false; // Désactiver la flèche après avoir touché le boss
+                    window.boss.checkDeath(); // Vérifier si le boss est mort
+                }
+            });
+        });
+    }
+
+    // Supprimer les flèches inactives des archers
+    if (window.archers) {
+        window.archers.forEach(archer => {
+            archer.arrows = archer.arrows.filter(arrow => arrow.active);
         });
     }
 

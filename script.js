@@ -13,11 +13,6 @@ function preload() {
     window.player = new Player();
     window.player.preload();
 
-    // Précharger les skins des monstres
-    monsters.forEach(monster => {
-        monster.preload();
-    });
-
     // Charger l'image de game over
     gameOverImage = loadImage('Assets/Player/PNG_/07-Dead/PS_BALD GUY_Dead_008.png');
 }
@@ -121,7 +116,6 @@ function spawnMonsters(numMonsters) {
         let randomX = Math.random() * mapWidth;
         let randomY = Math.random() * mapHeight;
         let newMonster = new Monster(window.player);
-        newMonster.preload(); // Précharger le skin du monstre
         newMonster.x = randomX;
         newMonster.y = randomY;
         monsters.push(newMonster);
@@ -178,6 +172,22 @@ function teleportToBossMap() {
 
     player.x = playerX;
     player.y = playerY;
+
+    // Créer et positionner les archers
+    window.archers = [];
+    let numArchers = window.player.level; // Par exemple, créer 10 archers
+    for (let i = 0; i < numArchers; i++) {
+        let archerX, archerY;
+        do {
+            archerX = Math.random() * 100 * tileSize;
+            archerY = Math.random() * 100 * tileSize;
+        } while (dist(archerX, archerY, window.boss.x, window.boss.y) < 10 * tileSize);
+
+        let archer = new Archers(player, window.boss);
+        archer.x = archerX;
+        archer.y = archerY;
+        window.archers.push(archer);
+    }
 
     // Changer la boucle de jeu active
     window.currentLoop = bossLoop;

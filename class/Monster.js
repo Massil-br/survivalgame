@@ -23,7 +23,7 @@ class Monster {
         this.attackRange = 2 * tileSize;
         this.attackCoolDown = 5 * 60; // 10 secondes * 60 FPS = 600 frames
         this.cooldown = 0; // Cooldown initialisé à 0
-        this.skin = null;
+        this.skin = loadImage("Assets/slime.jiggle.png");
         this.dead = false;
         this.player = player; // Ajout de la référence du joueur pour ajouter de l'XP
         this.moveCooldown = 1;
@@ -99,9 +99,7 @@ class Monster {
         }
     }
 
-    preload() {
-        this.skin = loadImage("Assets/slime.jiggle.png");
-    }
+   
 
     drawMonster() {
         if (this.skin && !this.dead) {

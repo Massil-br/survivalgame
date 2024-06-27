@@ -6,14 +6,14 @@ class Player {
     reset() {
         this.x = mapWidth / 2;
         this.y = mapHeight / 2;
-        this.speed = 20; // Vitesse de déplacement
+        this.speed = 7; // Vitesse de déplacement
         this.skin = null;
-        this.maxHealth = 1;
+        this.maxHealth = 20;
         this.health = this.maxHealth;
         this.maxXp = 20;
         this.xp = 0;
         this.level = 1;
-        this.damage = 4;
+        this.damage = 5;
         this.attackRange = 5 * tileSize;
         this.attackCoolDown = 3 * 60; // Cooldown en frames (3 secondes à 60 FPS)
         this.cooldown = 0; // Initialement, pas de cooldown
