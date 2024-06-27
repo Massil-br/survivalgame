@@ -64,16 +64,17 @@ class Boss extends Monster {
                 arrow.update();
                 arrow.draw();
             });
-
             // Supprimer les flèches inactives
             this.arrows = this.arrows.filter(arrow => arrow.active);
 
             // Tirer des flèches périodiquement
             if (frameCount % 120 === 0) { // Par exemple, tirer une flèche toutes les 120 frames
-                this.shootArrow(player.x, player.y);
+             this.shootArrow(player.x, player.y);
             }
-
+     
             this.attackPlayer(this.player);
+
+       
         }
     }
 }

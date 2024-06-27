@@ -42,17 +42,20 @@ class Monster {
             this.moveCooldown--;
         } else {
             let distanceToPlayer = this.dist(this.x, this.y, this.player.x, this.player.y);
-            if (distanceToPlayer < 5 * tileSize) {
+            if (distanceToPlayer < 8 * tileSize) {
                 // Se rapprocher du joueur
                 let angle = Math.atan2(this.player.y - this.y, this.player.x - this.x);
-                this.x += Math.cos(angle) * this.speed * 0.1; // Déplacement plus fluide
-                this.y += Math.sin(angle) * this.speed * 0.1; // Déplacement plus fluide
+                this.x += Math.cos(angle) * this.speed * 0.2; // Déplacement plus fluide
+                this.y += Math.sin(angle) * this.speed * 0.2; // Déplacement plus fluide
+                this.moveCooldown = 1; 
             } else {
                 // Mouvement aléatoire
-                this.x += (Math.random() - 0.5) * this.speed * 0.1; // Déplacement plus fluide
-                this.y += (Math.random() - 0.5) * this.speed * 0.1; // Déplacement plus fluide
+
+                this.x += (Math.random() - 0.5) * this.speed * 0.5; // Déplacement plus fluide
+                this.y += (Math.random() - 0.5) * this.speed * 0.5; // Déplacement plus fluide
+                this.moveCooldown = 8; 
             }
-            this.moveCooldown = 1; // Réinitialiser le cooldown pour un mouvement continu
+          // Réinitialiser le cooldown pour un mouvement continu
         }
     }
     dist(x1, y1, x2, y2) {

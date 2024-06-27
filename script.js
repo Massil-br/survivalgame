@@ -175,7 +175,7 @@ function teleportToBossMap() {
 
     // Créer et positionner les archers
     window.archers = [];
-    let numArchers = window.player.level; // Par exemple, créer 10 archers
+    let numArchers = player.level; // Créer un nombre d'archers égal au niveau du joueur
     for (let i = 0; i < numArchers; i++) {
         let archerX, archerY;
         do {
