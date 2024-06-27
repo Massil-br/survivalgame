@@ -188,6 +188,8 @@ function resetGame() {
     inBossMap = false;
     bossTp = false;
     victory = false;
+    boss = null;
+    archers = [];
 }
 
 function teleportToBossMap() {
