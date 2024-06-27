@@ -65,7 +65,7 @@ function setup() {
         makeBossMap();
     } else {
         setMapSize(600, 600);
-        spawnMonsters(500);
+        spawnMonsters(250);
     }
 }
 
@@ -151,6 +151,8 @@ function resetGame() {
     monsters = [];
     spawnCooldDown = 0;
     player.reset();
+    window.currentLoop = null;
+    inBossMap = false;
 }
 
 function teleportToBossMap() {
