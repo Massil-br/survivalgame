@@ -102,8 +102,6 @@ class Monster {
         }
     }
 
-   
-
     drawMonster() {
         if (this.skin && !this.dead) {
             let spriteWidth = 64; // Largeur originale du sprite dans le spritesheet
@@ -111,14 +109,13 @@ class Monster {
             let cols = 8; // Nombre de colonnes dans le spritesheet
             let rows = 3; // Nombre de lignes dans le spritesheet
 
-           
             let frameIndex = 17; 
             let col = frameIndex % cols;
             let row = Math.floor(frameIndex / cols);
 
             // Coordonnées du sprite à découper dans le spritesheet
             let sx = col * spriteWidth;
-            let sy = row * spriteHeight+1;
+            let sy = row * spriteHeight + 1;
 
             // Coordonnées où le sprite doit être dessiné sur le canevas
             let dx = this.x - tileSize / 2;
@@ -126,6 +123,25 @@ class Monster {
 
             // Dessiner le sprite redimensionné à tileSize
             image(this.skin, dx, dy, tileSize, tileSize, sx, sy, spriteWidth, spriteHeight);
+
+            // Dessiner la barre de vie si la santé n'est pas au maximum
+            if (this.health < this.maxHealth) {
+                this.drawHealthBar(dx, dy - 20, tileSize);
+            }
         }
+    }
+
+    // Méthode pour dessiner la barre de vie
+    drawHealthBar(x, y, width) {
+        let barHeight = 5; // Hauteur de la barre de vie
+
+        // Dessiner la barre de fond
+        fill(255, 0, 0);
+        rect(x, y, width, barHeight);
+
+        // Dessiner la barre de vie actuelle
+        let healthWidth = (this.health / this.maxHealth) * width;
+        fill(0, 255, 0);
+        rect(x, y, healthWidth, barHeight);
     }
 }

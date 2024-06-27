@@ -5,6 +5,8 @@ class Archers extends Monster {
         this.arrows = [];
         this.attackCoolDown = 3 * 60; // Cooldown d'attaque des archers
         this.range = 15 * tileSize; // Portée augmentée pour toucher le boss
+        this.maxHealth = 10 * player.level; 
+        this.health = this.maxHealth; 
     }
 
     // Méthode pour tirer des flèches
@@ -22,6 +24,11 @@ class Archers extends Monster {
             this.update();
             this.checkDeath();
             this.drawMonster();
+            
+            // Dessiner la barre de vie si la santé n'est pas au maximum
+            if (this.health < this.maxHealth) {
+                this.drawHealthBar();
+            }
 
             // Mettre à jour et dessiner les flèches
             this.arrows.forEach(arrow => {
@@ -50,5 +57,22 @@ class Archers extends Monster {
             this.y = Math.max(0, Math.min(100 * tileSize, this.y + (Math.random() - 0.5) * this.speed * 0.1)); // Déplacement plus fluide
             this.moveCooldown = 1; // Réinitialiser le cooldown pour un mouvement continu
         }
+    }
+
+    // Méthode pour dessiner la barre de vie
+    drawHealthBar() {
+        let barWidth = this.skinWidth; // Largeur de la barre de vie égale à la largeur du skin
+        let barHeight = 5; // Hauteur de la barre de vie
+        let x = this.x - barWidth / 2;
+        let y = this.y - this.skinHeight / 2 - 20; // 20 px au-dessus du monstre
+
+        // Dessiner la barre de fond
+        fill(255, 0, 0);
+        rect(x, y, barWidth, barHeight);
+
+        // Dessiner la barre de vie actuelle
+        let healthWidth = (this.health / this.maxHealth) * barWidth;
+        fill(0, 255, 0);
+        rect(x, y, healthWidth, barHeight);
     }
 }

@@ -29,7 +29,26 @@ class Boss extends Monster {
 
             // Dessiner le sprite redimensionné à la taille du boss
             image(this.skin, dx, dy, this.size, this.size);
+
+            // Dessiner la barre de vie si la santé n'est pas au maximum
+            if (this.health < this.maxHealth) {
+                this.drawHealthBar(dx, dy - 20, spriteWidth);
+            }
         }
+    }
+
+    // Méthode pour dessiner la barre de vie
+    drawHealthBar(x, y, width) {
+        let barHeight = 5; // Hauteur de la barre de vie
+
+        // Dessiner la barre de fond
+        fill(255, 0, 0);
+        rect(x, y, width, barHeight);
+
+        // Dessiner la barre de vie actuelle
+        let healthWidth = (this.health / this.maxHealth) * width;
+        fill(0, 255, 0);
+        rect(x, y, healthWidth, barHeight);
     }
 
     // Méthode pour vérifier les collisions avec un projectile
