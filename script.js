@@ -7,6 +7,7 @@ let gameOverImage;
 let currentLoop = null;
 let bossTp = false;
 let inBossMap = false;
+let victory = false;
 
 function preload() {
 
@@ -20,13 +21,15 @@ function preload() {
 function drawMenu(){
     background(0, 0, 0);
     fill(255);
-    textSize(20);
+    textSize(50);
     textAlign(CENTER, CENTER);
 
-    text("Menu", width / 2, height / 2 - 60);
-    text("Jouer", width / 2, height / 2);
-    text("Commandes", width / 2, height / 2 + 40);
-    text("Règles", width / 2, height / 2 + 80);
+    text("Menu", width / 2, height / 2 - 150);
+    textSize(20);
+    text("Cliquer sur l'écran pour jouer", width / 2, height / 2 + 50);
+    text("Z : Avancer | Q : Gauche | S : Reculer | D : Droite", width / 2, height / 2 + 90);
+    text("", width / 2, height / 2 + 90);
+    text("Appuyer sur M pour téléporter au boss", width / 2, height / 2 + 130);
 }
 
 function drawGameOver(){
@@ -46,9 +49,20 @@ function drawGameOver(){
     }
 
     textSize(20);
-    text("Jouer", width / 2, height / 2 + 50);
-    text("Commandes", width / 2, height / 2 + 90);
-    text("Règles", width / 2, height / 2 + 130);
+    text("Cliquer sur l'écran pour jouer", width / 2, height / 2 + 50);
+    text("Z : Avancer | Q : Gauche | S : Reculer | D : Droite", width / 2, height / 2 + 90);
+    text("Appuyer sur M pour téléporter au boss", width / 2, height / 2 + 130);
+}
+
+function drawVictory() {
+    background(0, 0, 0);
+    fill(255);
+    textSize(50);
+    textAlign(CENTER, CENTER);
+
+    text("Victoire!", width / 2, height / 2 - 150);
+    textSize(20);
+    text("Cliquer sur l'écran pour rejouer", width / 2, height / 2 + 50);
 }
 
 function setup() {
@@ -97,6 +111,8 @@ function draw() {
         } else {
             drawGameOver();
         }
+    } else if (victory) {
+        drawVictory();
     } else {
         if (window.currentLoop) {
             window.currentLoop();
@@ -107,6 +123,10 @@ function draw() {
         if (player.dead) {
             gameOver = true;
             gameOverCooldown = 3 * 60; // 3 fois 60 frames de cooldown (3 secondes à 60 FPS)
+        }
+
+        if (window.boss && window.boss.dead) {
+            victory = true;
         }
     }
 }
@@ -133,6 +153,11 @@ function mousePressed() {
         gameOver = false;
         showMenu = false;
         setup(); // Réinitialiser le jeu
+    } else if (victory) {
+        // Réinitialiser le jeu
+        resetGame();
+        victory = false;
+        showMenu = true;
     } else {
         // Calculer la translation pour centrer le joueur
         let translateX = width / 2 - player.x;
@@ -153,6 +178,8 @@ function resetGame() {
     player.reset();
     window.currentLoop = null;
     inBossMap = false;
+    bossTp = false;
+    victory = false;
 }
 
 function teleportToBossMap() {
